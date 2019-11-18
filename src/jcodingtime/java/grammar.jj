@@ -16,6 +16,7 @@ class Parser
 }
 PARSER_END(Parser)
 
+/* SEPARATORS */
 TOKEN :
 {
   < LPAREN: "(" >{System.out.println("PESQ -> "+image);}
@@ -30,9 +31,52 @@ TOKEN :
 | < AT: "@" >{System.out.println("ARROBA -> "+image);}
 }
 
+/* OPERATORS */
+
 TOKEN :
 {
-  < HEADER: "Test" >{System.out.println("HEADER -> "+image);}
+  < ASSIGN: "=" >
+| < LT: "<" >
+| < BANG: "!" >
+| < TILDE: "~" >
+| < HOOK: "?" >
+| < COLON: ":" >
+| < EQ: "==" >
+| < LE: "<=" >
+| < GE: ">=" >
+| < NE: "!=" >
+| < SC_OR: "||" >
+| < SC_AND: "&&" >
+| < INCR: "++" >
+| < DECR: "--" >
+| < PLUS: "+" >
+| < MINUS: "-" >
+| < STAR: "*" >
+| < SLASH: "/" >
+| < BIT_AND: "&" >
+| < BIT_OR: "|" >
+| < XOR: "^" >
+| < REM: "%" >
+| < LSHIFT: "<<" >
+| < PLUSASSIGN: "+=" >
+| < MINUSASSIGN: "-=" >
+| < STARASSIGN: "*=" >
+| < SLASHASSIGN: "/=" >
+| < ANDASSIGN: "&=" >
+| < ORASSIGN: "|=" >
+| < XORASSIGN: "^=" >
+| < REMASSIGN: "%=" >
+| < LSHIFTASSIGN: "<<=" >
+| < RSIGNEDSHIFTASSIGN: ">>=" >
+| < RUNSIGNEDSHIFTASSIGN: ">>>=" >
+| < ELLIPSIS: "..." >
+| < ARROW: "->" >
+| < DOUBLECOLON: "::" >
+}
+
+TOKEN :
+{
+    < DIGIT: ["0"-"9"]>{System.out.println("Dígito: -> "+image);}
 }
 
 SKIP:
@@ -43,5 +87,5 @@ SKIP:
 void Program():
 {}
 {
-    <AT><HEADER><LBRACE> <RBRACE>
+    <AT><LBRACE> <DIGIT> <RBRACE>
 }
