@@ -74,10 +74,31 @@ TOKEN :
 | < DOUBLECOLON: "::" >
 }
 
+/* NUMERATORS */
+
 TOKEN :
 {
     < DIGIT: ["0"-"9"]>{System.out.println("Dígito: -> "+image);}
+    | < INTEGER: (<DIGIT>)+ >{System.out.println("Inteiro: -> "+image);}
+    | < REAL: (<INTEGER>["."]<INTEGER>)+ >{System.out.println("Real: -> "+image);}
 }
+
+/* TEXT */
+
+TOKEN : {
+    < CHARACTER: (["a"-"z"]|["A"-"Z"])>{System.out.println("Character: -> "+image);}
+    | < IDENTIFIER: (["a"-"z"]|["A"-"Z"]|["0"-"9"])+>{System.out.println("Identifier: -> "+image);}
+    | < LITERAL: (["."])+>{System.out.println("Literal: -> "+image);}
+}
+
+/* RESERVED WORDS TO JCODINGTIME */
+
+TOKEN : {
+    < SCENARIO: "scenario">{System.out.println("Scenario: -> "+image);}
+    | < INPUT: "input">{System.out.println("Input: -> "+image);}
+    | < OUTPUT: "output">{System.out.println("Output: -> "+image);}
+}
+
 
 /* RESERVED WORDS */
 
@@ -148,6 +169,7 @@ TOKEN :
 | < TRANSITIVE: "transitive" >
 }
 
+
 SKIP:
 {
     " "| "\r\n" |"\t" | "\n" | "\r"
@@ -156,5 +178,5 @@ SKIP:
 void Program():
 {}
 {
-    <AT><LBRACE> <DIGIT> <RBRACE>
+    <AT><LBRACE> <REAL> <RBRACE> <LITERAL>
 }
