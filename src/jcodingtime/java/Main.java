@@ -8,22 +8,18 @@ public class Main {
     public static void main(String[] args) {
         try
         {
-
+            String source =
+                    "@scenario multiply two numbers" + "\n" +
+                            "@input 5, 5" + "\n" +
+                            "@output 25" + "\n" +
+                            "public static boolean multiplyTwoNumbers (int firstParameter, int secondParameter)";
             InputData inputData = new InputData();
-            inputData.setScenario("multiply two numbers");
-            inputData.setInput("5, 5");
-            inputData.setOutput("25");
-            inputData.setMethod("int multiplyNumbers");
-            inputData.setParameters("int firstValue, int secondValue");
 
-            String initialString = inputData.buildData();
+            inputData.setSource(source);
 
-            System.out.println(initialString);
-
-            InputStream targetStream = new ByteArrayInputStream(initialString.getBytes());
+            InputStream targetStream = new ByteArrayInputStream(source.getBytes());
             Parser parser = new Parser(targetStream);
             parser.Program();
-
         }
         catch(ParseException e)
         {
