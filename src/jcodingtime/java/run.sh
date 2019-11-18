@@ -2,4 +2,4 @@
 
 javacc grammar.jj
 javac *.java
-java Parser < grammar.txt
+#java Parser < grammar.txt

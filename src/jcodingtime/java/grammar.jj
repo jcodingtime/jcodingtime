@@ -189,9 +189,9 @@ void signatures() :
   <AT><INPUT> <DIGIT><COMMA><DIGIT>
   <AT><OUTPUT> <INTEGER>
 }
-//public static void multiplyTwoNumbers(int firstNumber, int secondNumber)
+
 void method() :
 {}
 {
-   ((<PUBLIC>|<PRIVATE>|<PROTECTED>) (<STATIC> <VOID> | <VOID>) | (<STATIC> <VOID> | <VOID>))  <IDENTIFIER> <LPAREN> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE>) <IDENTIFIER> <COMMA> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE>) <IDENTIFIER> <RPAREN>
+   ((<PUBLIC>|<PRIVATE>|<PROTECTED>) (<STATIC> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE> | <VOID>) | (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE> | <VOID>)) | (<STATIC> <VOID> | <VOID>))  <IDENTIFIER> <LPAREN> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE>) <IDENTIFIER> <COMMA> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE>) <IDENTIFIER> <RPAREN>
 }
