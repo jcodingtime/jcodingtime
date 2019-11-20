@@ -19,9 +19,9 @@ PARSER_END(Parser)
 /* RESERVED WORDS TO JCODINGTIME */
 
 TOKEN : {
-    < SCENARIO: "scenario">{System.out.println("Scenario: -> "+image);}
-    | < INPUT: "input">{System.out.println("Input: -> "+image);}
-    | < OUTPUT: "output">{System.out.println("Output: -> "+image);}
+    < JCODINGTIME: "jcodingtime">{System.out.println("Palavra reservada jcodingtime coincide com -> "+image);}
+    | < INPUT: "input">{System.out.println("Palavra reservada input coincide com -> "+image);}
+    | < OUTPUT: "output">{System.out.println("Palavra reservada output coincide com -> "+image);}
 }
 
 /* SEPARATORS */
@@ -179,14 +179,13 @@ void Program():
 {
         signatures()
         method()
-
 }
 
 void signatures() :
 {}
 {
-  <AT><SCENARIO> <IDENTIFIER> <IDENTIFIER> <IDENTIFIER>
-  <AT><INPUT> <DIGIT><COMMA><DIGIT>
+  <AT><JCODINGTIME>
+  <AT><INPUT> <LPAREN> <DIGIT> <COMMA><DIGIT> <RPAREN>
   <AT><OUTPUT> <INTEGER>
 }
 

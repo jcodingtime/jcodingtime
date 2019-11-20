@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-javacc grammar.jj
+javacc jct.jj
 javac *.java
 #java Parser < grammar.txt

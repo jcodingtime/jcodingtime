@@ -1,5 +1,8 @@
 package verifier.enter;
 
+import generator.builder.TestBuilder;
+import generator.builder.TestMethodBuilder;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,74 +91,55 @@ public class InputData {
     /**
      * Splice the data, receive scenario, input, output and method name
      */
-    private void spliceData(){
-        String describeScenario="";
+    public void spliteData(){
+        String describeJcodingtime = "";
         String describeInput = "";
         String describeOutput = "";
         String describeMethodName = "";
 
         String input = getSource();
 
-        Pattern pScenario = Pattern.compile("@scenario(.*?\n@input)");
-        Matcher mScenario = pScenario.matcher(input);
+        Pattern pJCodingTime = Pattern.compile("@jcodingtime(.*?\n@input)");
+        Matcher mJCodingTime = pJCodingTime.matcher(input);
 
-        if(mScenario.find())
-            describeScenario = mScenario.group().subSequence(10, mScenario.group().length()-6).toString();
-            setScenario(describeScenario);
+        if(mJCodingTime.find()) {
 
-        Pattern pInput = Pattern.compile("@input(.*?\n@output)");
-        Matcher mInput = pInput.matcher(input);
+            Pattern pInput = Pattern.compile("@input(.*?\n@output)");
+            Matcher mInput = pInput.matcher(input);
 
-        if(mInput.find())
-            describeInput = mInput.group().subSequence(7, mInput.group().length()-7).toString();
+            if (mInput.find())
+                describeInput = mInput.group().subSequence(7, mInput.group().length() - 7).toString();
             setInput(describeInput);
 
-        Pattern pOutput = Pattern.compile("@output(.*?\npublic)");
-        Matcher mOutput = pOutput.matcher(input);
+            Pattern pOutput = Pattern.compile("@output(.*?\npublic)");
+            Matcher mOutput = pOutput.matcher(input);
 
-        if(mOutput.find())
-            describeOutput = mOutput.group().subSequence(8, mOutput.group().length()-7).toString();
+            if (mOutput.find())
+                describeOutput = mOutput.group().subSequence(8, mOutput.group().length() - 7).toString();
             setOutput(describeOutput);
 
-        Pattern pMethodName = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\()");
-        Matcher mMethodName = pMethodName.matcher(input);
+            Pattern pMethodName = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\()");
+            Matcher mMethodName = pMethodName.matcher(input);
 
-        if(mMethodName.find()){
-            describeMethodName = mMethodName.group().subSequence(0, mMethodName.group().length()-6).toString();
+            if (mMethodName.find()) {
+                describeMethodName = mMethodName.group().subSequence(0, mMethodName.group().length() - 6).toString();
 
-            if(describeMethodName.contains("int")){
-                describeMethodName = mMethodName.group().subSequence(4, mMethodName.group().length()-2).toString();
+                if (describeMethodName.contains("int")) {
+                    describeMethodName = mMethodName.group().subSequence(4, mMethodName.group().length() - 2).toString();
+                } else if (describeMethodName.contains("char") | describeMethodName.contains("void")) {
+                    describeMethodName = mMethodName.group().subSequence(5, mMethodName.group().length() - 2).toString();
+                } else if (describeMethodName.contains("double")) {
+                    describeMethodName = mMethodName.group().subSequence(7, mMethodName.group().length() - 2).toString();
+                } else {
+                    describeMethodName = mMethodName.group().subSequence(8, mMethodName.group().length() - 2).toString();
+                }
+                setOutput(describeMethodName);
             }
-            else if(describeMethodName.contains("char") | describeMethodName.contains("void")){
-                describeMethodName = mMethodName.group().subSequence(5, mMethodName.group().length()-2).toString();
-            }
-            else if(describeMethodName.contains("double")){
-                describeMethodName = mMethodName.group().subSequence(7, mMethodName.group().length()-2).toString();
-            }
-            else {
-                describeMethodName = mMethodName.group().subSequence(8, mMethodName.group().length()-2).toString();
-            }
-            setOutput(describeMethodName);
+        } else {
+            System.out.println("Erro, não foi possível encontrar a expressão @jcodingtime");
         }
-    }
-
-    /**
-     * Unifies the data
-     * @return inputData
-     */
-    public String entries(String entries){
-        String input =
-                "@scenario multiply two numbers " +
-                        "@input 5, 5 " +
-                        "@output 25 " +
-                        "public static int multiplyTwoNumbers (int firstParameter, int secondParameter)";
-        Pattern MY_PATTERN = Pattern.compile("@scenario(.*)\\\n@input");
-
-        String inputData = "@scenario " + getScenario() + "\n" +
-                "@input "+ getInput() + "\n" +
-                "@output "+ getOutput() + "\n" +
-                "public static " + getMethod() + "("+ getParameters() +")";
-        return inputData;
+        TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodName);
+        System.out.println(testMethodBuilder.generate());
     }
 
 }
