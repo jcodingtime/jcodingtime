@@ -2,7 +2,6 @@ package verifier.enter;
 
 import generator.builder.TestBuilder;
 import generator.builder.TestMethodBuilder;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
