@@ -14,7 +14,7 @@ public class Main {
                             "@jcodingtime" + "\n" +
                             "@input (5, 5)" + "\n" +
                             "@output 25" + "\n" +
-                            "public static boolean multiplyTwoNumbers (int firstParameter, int secondParameter)";
+                            "public static int multiplyTwoNumbers (int firstParameter, int secondParameter)";
             InputData inputData = new InputData();
 
             inputData.setSource(source);

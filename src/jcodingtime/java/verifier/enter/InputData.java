@@ -91,15 +91,18 @@ public class InputData {
      * Splice the data, receive scenario, input, output and method name
      */
     public void spliteData(){
-        String describeJcodingtime = "";
         String describeInput = "";
         String describeOutput = "";
         String describeMethodName = "";
+        String typeMethod = "";
+        String typeParameter = "";
 
         String input = getSource();
 
         Pattern pJCodingTime = Pattern.compile("@jcodingtime(.*?\n@input)");
         Matcher mJCodingTime = pJCodingTime.matcher(input);
+
+        String paramenters = "";
 
         if(mJCodingTime.find()) {
 
@@ -121,23 +124,39 @@ public class InputData {
             Matcher mMethodName = pMethodName.matcher(input);
 
             if (mMethodName.find()) {
+                Pattern pParams = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\))");
+                Matcher mParams= pParams.matcher(input);
+                if(mParams.find()){
+                    String fullMethod = mParams.group().subSequence(0, mParams.group().length()).toString();
+                    String spliteFullMethod[] = fullMethod.split("\\(");
+                    paramenters = "(" + spliteFullMethod[1];
+                }
+
                 describeMethodName = mMethodName.group().subSequence(0, mMethodName.group().length() - 6).toString();
 
                 if (describeMethodName.contains("int")) {
                     describeMethodName = mMethodName.group().subSequence(4, mMethodName.group().length() - 2).toString();
-                } else if (describeMethodName.contains("char") | describeMethodName.contains("void")) {
+                    typeMethod = "int";
+                } else if (describeMethodName.contains("char")) {
                     describeMethodName = mMethodName.group().subSequence(5, mMethodName.group().length() - 2).toString();
+                    typeMethod = "char";
+                } else if (describeMethodName.contains("void")) {
+                    describeMethodName = mMethodName.group().subSequence(5, mMethodName.group().length() - 2).toString();
+                    typeMethod = "void";
                 } else if (describeMethodName.contains("double")) {
                     describeMethodName = mMethodName.group().subSequence(7, mMethodName.group().length() - 2).toString();
+                    typeMethod = "double";
                 } else {
                     describeMethodName = mMethodName.group().subSequence(8, mMethodName.group().length() - 2).toString();
+                    typeMethod = "boolean";
                 }
-                setOutput(describeMethodName);
+
+                setMethod(describeMethodName);
             }
         } else {
             System.out.println("Erro, não foi possível encontrar a expressão @jcodingtime");
         }
-        TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodName);
+        TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodName, typeMethod, paramenters, getOutput(), getInput());
         System.out.println(testMethodBuilder.generate());
     }
 
