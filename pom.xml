@@ -7,6 +7,13 @@
     <groupId>jcodingtime</groupId>
     <artifactId>tcc-jcodingtime</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
     <dependencies>

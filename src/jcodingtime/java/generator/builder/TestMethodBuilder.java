@@ -1,5 +1,7 @@
 package generator.builder;
 
+import org.apache.log4j.Logger;
+
 public class TestMethodBuilder extends TestBuilder {
 
     private String methodName;
@@ -8,6 +10,9 @@ public class TestMethodBuilder extends TestBuilder {
     private String paramenters;
     private String output;
     private String input;
+
+    final static Logger logger = Logger.getLogger(TestMethodBuilder.class);
+
 
     public TestMethodBuilder(String methodName, String typeMethod, String paramenters, String output, String input){
         super(methodName);
@@ -19,6 +24,9 @@ public class TestMethodBuilder extends TestBuilder {
     }
 
     public String generate() {
+
+        logger.info("The generation of method test was started.");
+
         output = output.replace("\n", "").replace("\r", "");
         input = input.replace("\n", "").replace("\r", "");
 

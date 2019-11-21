@@ -27,16 +27,16 @@ TOKEN : {
 /* SEPARATORS */
 TOKEN :
 {
-  < LPAREN: "(" >{System.out.println("PESQ -> "+image);}
-| < RPAREN: ")" >{System.out.println("PDIR -> "+image);}
-| < LBRACE: "{" >{System.out.println("CESQ -> "+image);}
-| < RBRACE: "}" >{System.out.println("CDIR -> "+image);}
-| < LBRACKET: "[" >{System.out.println("COUESQ -> "+image);}
-| < RBRACKET: "]" >{System.out.println("COUDIR -> "+image);}
-| < SEMICOLON: ";" >{System.out.println("PONTO E VÍRGULA -> "+image);}
-| < COMMA: "," >{System.out.println("VÍRGULA -> "+image);}
-| < DOT: "." >{System.out.println("PONTO -> "+image);}
-| < AT: "@" >{System.out.println("ARROBA -> "+image);}
+  < LPAREN: "(" >{System.out.println("Parêntese esquerdo -> "+image);}
+| < RPAREN: ")" >{System.out.println("Parêntese direito -> "+image);}
+| < LBRACE: "{" >{System.out.println("Chave esquerda -> "+image);}
+| < RBRACE: "}" >{System.out.println("Chave direita -> "+image);}
+| < LBRACKET: "[" >{System.out.println("Colchete esquerdo-> "+image);}
+| < RBRACKET: "]" >{System.out.println("Colchete direito-> "+image);}
+| < SEMICOLON: ";" >{System.out.println("Ponto e vírgula -> "+image);}
+| < COMMA: "," >{System.out.println("Vírgula -> "+image);}
+| < DOT: "." >{System.out.println("Ponto -> "+image);}
+| < AT: "@" >{System.out.println("Símbolo arroba -> "+image);}
 }
 
 /* OPERATORS */
@@ -123,7 +123,7 @@ TOKEN :
 | < IMPLEMENTS: "implements" >
 | < IMPORT: "import" >
 | < INSTANCEOF: "instanceof" >
-| < INT: "int" >{System.out.println("int: -> "+image);}
+| < INT: "int" >{System.out.println("palavra reservada int: -> "+image);}
 | < INTERFACE: "interface" >
 | < LONG: "long" >
 | < NATIVE: "native" >
@@ -132,7 +132,7 @@ TOKEN :
 | < PACKAGE: "package">
 | < PRIVATE: "private" >
 | < PROTECTED: "protected" >
-| < PUBLIC: "public" >{System.out.println("public: -> "+image);}
+| < PUBLIC: "public" >{System.out.println("palavra reservada public: -> "+image);}
 | < RETURN: "return" >
 | < SHORT: "short" >
 | < STATIC: "static" >
@@ -146,7 +146,7 @@ TOKEN :
 | < TRANSIENT: "transient" >
 | < TRUE: "true" >
 | < TRY: "try" >
-| < VOID: "void" >{System.out.println("void: -> "+image);}
+| < VOID: "void" >{System.out.println("palavra reservada void: -> "+image);}
 | < VOLATILE: "volatile" >
 | < WHILE: "while" >
 | < REQUIRES: "requires" >
@@ -164,8 +164,8 @@ TOKEN :
 /* TEXT */
 
 TOKEN : {
-    < CHARACTER: (["a"-"z"]|["A"-"Z"])>{System.out.println("Character: -> "+image);}
-    | < IDENTIFIER: (["a"-"z"]|["A"-"Z"]|["0"-"9"])+>{System.out.println("Identifier: -> "+image);}
+    < CHARACTER: (["a"-"z"]|["A"-"Z"])>{System.out.println("Caractere: -> "+image);}
+    | < IDENTIFIER: (["a"-"z"]|["A"-"Z"]|["0"-"9"])+>{System.out.println("Identificador: -> "+image);}
     | < LITERAL: (["."])+>{System.out.println("Literal: -> "+image);}
 }
 

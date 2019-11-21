@@ -2,6 +2,8 @@ package verifier.enter;
 
 import generator.builder.TestBuilder;
 import generator.builder.TestMethodBuilder;
+import org.apache.log4j.Logger;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +19,8 @@ public class InputData {
     private String method;
     private String parameters;
     private String source;
+
+    final static Logger logger = Logger.getLogger(InputData.class);
 
     //constructor
     public InputData() {
@@ -88,14 +92,16 @@ public class InputData {
     }
 
     /**
-     * Splice the data, receive scenario, input, output and method name
+     * Splice the data to distribuite values for input, output and method name
      */
     public void spliteData(){
+
+        logger.info("The capturing of input, output and method name was stated.");
+
         String describeInput = "";
         String describeOutput = "";
         String describeMethodName = "";
         String typeMethod = "";
-        String typeParameter = "";
 
         String input = getSource();
 
@@ -150,14 +156,12 @@ public class InputData {
                     describeMethodName = mMethodName.group().subSequence(8, mMethodName.group().length() - 2).toString();
                     typeMethod = "boolean";
                 }
-
                 setMethod(describeMethodName);
             }
         } else {
-            System.out.println("Erro, não foi possível encontrar a expressão @jcodingtime");
+            logger.error("Error, not found expression @jcodingtime");
         }
         TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodName, typeMethod, paramenters, getOutput(), getInput());
         System.out.println(testMethodBuilder.generate());
     }
-
 }
