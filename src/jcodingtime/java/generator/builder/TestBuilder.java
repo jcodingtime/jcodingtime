@@ -2,11 +2,9 @@ package generator.builder;
 
 public abstract class TestBuilder {
 
-    private String description;
     private StringBuffer stringBuffer;
 
-    public TestBuilder(String description){
-        this.description = description;
+    public TestBuilder(){
     }
 
     public abstract String generate();

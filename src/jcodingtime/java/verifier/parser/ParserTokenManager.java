@@ -1279,91 +1279,91 @@ static void TokenLexicalActions(Token matchedToken)
       case 4 :
         image.append(jjstrLiteralImages[4]);
         lengthOfMatch = jjstrLiteralImages[4].length();
-                  System.out.println("Par\u00eantese esquerdo -> "+image);
+                  System.out.println("Par\u00eantese esquerdo coincide com -> "+image);
          break;
       case 5 :
         image.append(jjstrLiteralImages[5]);
         lengthOfMatch = jjstrLiteralImages[5].length();
-                  System.out.println("Par\u00eantese direito -> "+image);
+                  System.out.println("Par\u00eantese direito coincide com -> "+image);
          break;
       case 6 :
         image.append(jjstrLiteralImages[6]);
         lengthOfMatch = jjstrLiteralImages[6].length();
-                  System.out.println("Chave esquerda -> "+image);
+                  System.out.println("Chave esquerda coincide com -> "+image);
          break;
       case 7 :
         image.append(jjstrLiteralImages[7]);
         lengthOfMatch = jjstrLiteralImages[7].length();
-                  System.out.println("Chave direita -> "+image);
+                  System.out.println("Chave direita coincide com -> "+image);
          break;
       case 8 :
         image.append(jjstrLiteralImages[8]);
         lengthOfMatch = jjstrLiteralImages[8].length();
-                    System.out.println("Colchete esquerdo-> "+image);
+                    System.out.println("Colchete esquerdo coincide com -> "+image);
          break;
       case 9 :
         image.append(jjstrLiteralImages[9]);
         lengthOfMatch = jjstrLiteralImages[9].length();
-                    System.out.println("Colchete direito-> "+image);
+                    System.out.println("Colchete direito coincide com -> "+image);
          break;
       case 10 :
         image.append(jjstrLiteralImages[10]);
         lengthOfMatch = jjstrLiteralImages[10].length();
-                     System.out.println("Ponto e v\u00edrgula -> "+image);
+                     System.out.println("Ponto e v\u00edrgula coincide com -> "+image);
          break;
       case 11 :
         image.append(jjstrLiteralImages[11]);
         lengthOfMatch = jjstrLiteralImages[11].length();
-                 System.out.println("V\u00edrgula -> "+image);
+                 System.out.println("V\u00edrgula coincide com -> "+image);
          break;
       case 12 :
         image.append(jjstrLiteralImages[12]);
         lengthOfMatch = jjstrLiteralImages[12].length();
-               System.out.println("Ponto -> "+image);
+               System.out.println("Ponto coincide com -> "+image);
          break;
       case 13 :
         image.append(jjstrLiteralImages[13]);
         lengthOfMatch = jjstrLiteralImages[13].length();
-              System.out.println("S\u00edmbolo arroba -> "+image);
+              System.out.println("S\u00edmbolo arroba coincide com -> "+image);
          break;
       case 51 :
         image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                        System.out.println("D\u00edgito: -> "+image);
+                        System.out.println("D\u00edgito coincide com -> "+image);
          break;
       case 52 :
         image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                              System.out.println("Inteiro: -> "+image);
+                              System.out.println("Inteiro coincide com -> "+image);
          break;
       case 53 :
         image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                           System.out.println("Real: -> "+image);
+                                           System.out.println("Real coincide com -> "+image);
          break;
       case 81 :
         image.append(jjstrLiteralImages[81]);
         lengthOfMatch = jjstrLiteralImages[81].length();
-                 System.out.println("palavra reservada int: -> "+image);
+                 System.out.println("Palavra reservada int coincide com -> "+image);
          break;
       case 90 :
         image.append(jjstrLiteralImages[90]);
         lengthOfMatch = jjstrLiteralImages[90].length();
-                       System.out.println("palavra reservada public: -> "+image);
+                       System.out.println("Palavra reservada public coincide com -> "+image);
          break;
       case 104 :
         image.append(jjstrLiteralImages[104]);
         lengthOfMatch = jjstrLiteralImages[104].length();
-                   System.out.println("palavra reservada void: -> "+image);
+                   System.out.println("Palavra reservada void coincide com -> "+image);
          break;
       case 117 :
         image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                        System.out.println("Caractere: -> "+image);
+                                        System.out.println("Caractere coincide com -> "+image);
          break;
       case 118 :
         image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                      System.out.println("Identificador: -> "+image);
+                                                      System.out.println("Identificador coincide com -> "+image);
          break;
       case 119 :
         image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                           System.out.println("Literal: -> "+image);
+                           System.out.println("Literal -> "+image);
          break;
       default :
          break;

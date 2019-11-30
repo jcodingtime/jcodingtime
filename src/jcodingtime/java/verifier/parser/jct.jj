@@ -27,16 +27,16 @@ TOKEN : {
 /* SEPARATORS */
 TOKEN :
 {
-  < LPAREN: "(" >{System.out.println("Parêntese esquerdo -> "+image);}
-| < RPAREN: ")" >{System.out.println("Parêntese direito -> "+image);}
-| < LBRACE: "{" >{System.out.println("Chave esquerda -> "+image);}
-| < RBRACE: "}" >{System.out.println("Chave direita -> "+image);}
-| < LBRACKET: "[" >{System.out.println("Colchete esquerdo-> "+image);}
-| < RBRACKET: "]" >{System.out.println("Colchete direito-> "+image);}
-| < SEMICOLON: ";" >{System.out.println("Ponto e vírgula -> "+image);}
-| < COMMA: "," >{System.out.println("Vírgula -> "+image);}
-| < DOT: "." >{System.out.println("Ponto -> "+image);}
-| < AT: "@" >{System.out.println("Símbolo arroba -> "+image);}
+  < LPAREN: "(" >{System.out.println("Parêntese esquerdo coincide com -> "+image);}
+| < RPAREN: ")" >{System.out.println("Parêntese direito coincide com -> "+image);}
+| < LBRACE: "{" >{System.out.println("Chave esquerda coincide com -> "+image);}
+| < RBRACE: "}" >{System.out.println("Chave direita coincide com -> "+image);}
+| < LBRACKET: "[" >{System.out.println("Colchete esquerdo coincide com -> "+image);}
+| < RBRACKET: "]" >{System.out.println("Colchete direito coincide com -> "+image);}
+| < SEMICOLON: ";" >{System.out.println("Ponto e vírgula coincide com -> "+image);}
+| < COMMA: "," >{System.out.println("Vírgula coincide com -> "+image);}
+| < DOT: "." >{System.out.println("Ponto coincide com -> "+image);}
+| < AT: "@" >{System.out.println("Símbolo arroba coincide com -> "+image);}
 }
 
 /* OPERATORS */
@@ -86,9 +86,9 @@ TOKEN :
 
 TOKEN :
 {
-    < DIGIT: ["0"-"9"]>{System.out.println("Dígito: -> "+image);}
-    | < INTEGER: (<DIGIT>)+ >{System.out.println("Inteiro: -> "+image);}
-    | < REAL: (<INTEGER>["."]<INTEGER>)+ >{System.out.println("Real: -> "+image);}
+    < DIGIT: ["0"-"9"]>{System.out.println("Dígito coincide com -> "+image);}
+    | < INTEGER: (<DIGIT>)+ >{System.out.println("Inteiro coincide com -> "+image);}
+    | < REAL: (<INTEGER>["."]<INTEGER>)+ >{System.out.println("Real coincide com -> "+image);}
 }
 
 
@@ -123,7 +123,7 @@ TOKEN :
 | < IMPLEMENTS: "implements" >
 | < IMPORT: "import" >
 | < INSTANCEOF: "instanceof" >
-| < INT: "int" >{System.out.println("palavra reservada int: -> "+image);}
+| < INT: "int" >{System.out.println("Palavra reservada int coincide com -> "+image);}
 | < INTERFACE: "interface" >
 | < LONG: "long" >
 | < NATIVE: "native" >
@@ -132,7 +132,7 @@ TOKEN :
 | < PACKAGE: "package">
 | < PRIVATE: "private" >
 | < PROTECTED: "protected" >
-| < PUBLIC: "public" >{System.out.println("palavra reservada public: -> "+image);}
+| < PUBLIC: "public" >{System.out.println("Palavra reservada public coincide com -> "+image);}
 | < RETURN: "return" >
 | < SHORT: "short" >
 | < STATIC: "static" >
@@ -146,7 +146,7 @@ TOKEN :
 | < TRANSIENT: "transient" >
 | < TRUE: "true" >
 | < TRY: "try" >
-| < VOID: "void" >{System.out.println("palavra reservada void: -> "+image);}
+| < VOID: "void" >{System.out.println("Palavra reservada void coincide com -> "+image);}
 | < VOLATILE: "volatile" >
 | < WHILE: "while" >
 | < REQUIRES: "requires" >
@@ -164,33 +164,29 @@ TOKEN :
 /* TEXT */
 
 TOKEN : {
-    < CHARACTER: (["a"-"z"]|["A"-"Z"])>{System.out.println("Caractere: -> "+image);}
-    | < IDENTIFIER: (["a"-"z"]|["A"-"Z"]|["0"-"9"])+>{System.out.println("Identificador: -> "+image);}
-    | < LITERAL: (["."])+>{System.out.println("Literal: -> "+image);}
+    < CHARACTER: (["a"-"z"]|["A"-"Z"])>{System.out.println("Caractere coincide com -> "+image);}
+    | < IDENTIFIER: (["a"-"z"]|["A"-"Z"]|["0"-"9"])+>{System.out.println("Identificador coincide com -> "+image);}
+    | < LITERAL: (["."])+>{System.out.println("Literal -> "+image);}
 }
 
-SKIP:
+SKIP : {
+    " "|"\r\n"|"\t"|"\n"|"\r"
+}
+
+void Program():{}
 {
-    " "| "\r\n" |"\t" | "\n" | "\r"
+    signatures()
+    method()
 }
 
-void Program():
-{}
-{
-        signatures()
-        method()
-}
-
-void signatures() :
-{}
+void signatures():{}
 {
   <AT><JCODINGTIME>
-  <AT><INPUT> <LPAREN> <DIGIT> <COMMA><DIGIT> <RPAREN>
-  <AT><OUTPUT> <INTEGER>
+  <AT><INPUT> <LPAREN> <DIGIT> <COMMA><DIGIT> <RPAREN> <SEMICOLON>
+  <AT><OUTPUT> <INTEGER> <SEMICOLON>
 }
 
-void method() :
-{}
+void method():{}
 {
    ((<PUBLIC>|<PRIVATE>|<PROTECTED>) (<STATIC> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE> | <VOID>) | (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE> | <VOID>)) | (<STATIC> <VOID> | <VOID>))  <IDENTIFIER> <LPAREN> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE>) <IDENTIFIER> <COMMA> (<INT> | <FLOAT> | <CHAR> | <BOOLEAN> | <DOUBLE>) <IDENTIFIER> <RPAREN>
 }

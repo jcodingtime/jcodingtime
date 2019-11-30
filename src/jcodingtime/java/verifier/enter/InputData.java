@@ -85,8 +85,8 @@ public class InputData {
      */
     private String buildData(){
         String inputData = "@scenario " + getScenario() + "\n" +
-                "@input "+ getInput() + "\n" +
-                "@output "+ getOutput() + "\n" +
+                "@input "+ getInput() + "\n" + ";" +
+                "@output "+ getOutput() + "\n" + ";" +
                 "public static " + getMethod() + "("+ getParameters() +")";
         return inputData;
     }
@@ -96,7 +96,7 @@ public class InputData {
      */
     public void spliteData(){
 
-        logger.info("The capturing of input, output and method name was stated.");
+        logger.info("The capturing of input, output and method name was started.");
 
         String describeInput = "";
         String describeOutput = "";
@@ -162,6 +162,7 @@ public class InputData {
             logger.error("Error, not found expression @jcodingtime");
         }
         TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodName, typeMethod, paramenters, getOutput(), getInput());
-        System.out.println(testMethodBuilder.generate());
+        testMethodBuilder.generate();
+        System.out.println(testMethodBuilder.getStringBuffer().toString());
     }
 }

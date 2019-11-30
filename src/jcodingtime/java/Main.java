@@ -3,7 +3,6 @@ import verifier.parser.ParseException;
 import verifier.parser.Parser;
 
 import org.apache.log4j.Logger;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -12,12 +11,11 @@ public class Main {
     final static Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
-        try
-        {
+        try {
             String source = "@jcodingtime" + "\n" +
-                            "@input (5, 5)" + "\n" +
-                            "@output 25" + "\n" +
-                            "public static int multiplyTwoNumbers (int firstParameter, int secondParameter)";
+                    "@input (5, 5)" + ";" + "\n" +
+                    "@output 25" + ";" + "\n" +
+                    "public static int multiplyTwoNumbers(int firstParameter, int secondParameter)";
             InputData inputData = new InputData();
 
             inputData.setSource(source);
@@ -27,8 +25,7 @@ public class Main {
             Parser parser = new Parser(targetStream);
             parser.Program();
         }
-        catch(ParseException e)
-        {
+        catch(ParseException e) {
             logger.error("Could not parser this file", e);
         }
     }
