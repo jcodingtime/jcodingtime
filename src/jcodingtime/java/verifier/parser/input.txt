@@ -1,0 +1,5 @@
+@jcodingtime
+@input (5, 5);
+@output 25;
+public static int multiplyTwoNumbers(int firstParameter, int secondParameter)
+
