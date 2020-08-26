@@ -1,4 +1,4 @@
-package verifier.enter;
+package verifier.collector;
 
 import generator.builder.TestBuilder;
 import generator.builder.TestMethodBuilder;
@@ -105,25 +105,27 @@ public class InputData {
 
         String input = getSource();
 
-        Pattern pJCodingTime = Pattern.compile("@jcodingtime(.*?\n@input)");
+        Pattern pJCodingTime = Pattern.compile("@JCodingTime(.*?\n@Input)");
         Matcher mJCodingTime = pJCodingTime.matcher(input);
 
         String paramenters = "";
 
         if(mJCodingTime.find()) {
 
-            Pattern pInput = Pattern.compile("@input(.*?\n@output)");
+            Pattern pInput = Pattern.compile("@Input(.*?\n@Output)");
             Matcher mInput = pInput.matcher(input);
 
             if (mInput.find())
                 describeInput = mInput.group().subSequence(7, mInput.group().length() - 7).toString();
+            System.out.println(describeInput);
             setInput(describeInput);
 
-            Pattern pOutput = Pattern.compile("@output(.*?\npublic)");
+            Pattern pOutput = Pattern.compile("@Output(.*?\npublic)");
             Matcher mOutput = pOutput.matcher(input);
 
             if (mOutput.find())
                 describeOutput = mOutput.group().subSequence(8, mOutput.group().length() - 7).toString();
+            System.out.println(describeOutput);
             setOutput(describeOutput);
 
             Pattern pMethodName = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\()");
@@ -156,6 +158,7 @@ public class InputData {
                     describeMethodName = mMethodName.group().subSequence(8, mMethodName.group().length() - 2).toString();
                     typeMethod = "boolean";
                 }
+                System.out.println(describeMethodName);
                 setMethod(describeMethodName);
             }
         } else {

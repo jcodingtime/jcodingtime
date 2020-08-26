@@ -2,4 +2,7 @@
 
 javacc jct.jj
 javac *.java
-#java Parser < grammar.txt
+
+# ir para a pasta java e executar o comando:
+
+#java verifier.parser.Parser < input.txt > output.txt

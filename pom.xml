@@ -17,13 +17,15 @@
 
     <dependencyManagement>
     <dependencies>
-        <dependency>
+       <!-- 
+       <dependency>
             <groupId>net.java.dev.javacc</groupId>
             <artifactId>javacc</artifactId>
             <version>5.0-5</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
+         -->
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>

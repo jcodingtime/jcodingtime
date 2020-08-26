@@ -11,5 +11,6 @@ public class Example {
 	@Output(result=25)
 	public static int multiplyTwoNumbers(int firstParameter, int secondParameter) {
 		return firstParameter * secondParameter;
-	}	
+	}
+	
 }
