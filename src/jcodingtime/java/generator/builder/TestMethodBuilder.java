@@ -1,5 +1,10 @@
 package generator.builder;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
 public class TestMethodBuilder extends TestBuilder {
@@ -10,7 +15,7 @@ public class TestMethodBuilder extends TestBuilder {
     private String output;
     private String input;
     private StringBuffer stringBuffer;
-
+    private BufferedWriter bufferedWriter;
 
     final static Logger logger = Logger.getLogger(TestMethodBuilder.class);
 
@@ -32,7 +37,7 @@ public class TestMethodBuilder extends TestBuilder {
         input = input.replace("\n", "").replace("\r", "");
 
         stringBuffer = new StringBuffer();
-
+        
         stringBuffer.append("@Test");
         stringBuffer.append("\npublic "+ typeMethod + " test" +
                 methodName.toUpperCase().substring(0,1) +
@@ -43,13 +48,39 @@ public class TestMethodBuilder extends TestBuilder {
                 "\n}");
         return stringBuffer.toString();
     }
+    
+    public void generateFile() {
 
+    	
+    	try {
+    		//Specify the file name and path here
+    		 File file = new File("src/jcodingtime/java/example/output/ExampleTest.java");
+
+    		 /* This logic will make sure that the file 
+    		  * gets created if it is not present at the
+    		  * specified location*/
+    		  if (!file.exists()) {
+    		     file.createNewFile();
+    		  }
+    		  
+
+    		  FileWriter fw = new FileWriter(file);
+    		  bufferedWriter = new BufferedWriter(fw);
+    		  bufferedWriter.write(stringBuffer.toString());
+    		  bufferedWriter.close();
+    		  System.out.println("File written Successfully");
+        }
+        catch(IOException e) {
+        	logger.error("Could not create this file", e);
+    	}
+    }
+    
     public StringBuffer getStringBuffer() {
         return stringBuffer;
     }
 
-    public void setStringBuffer(StringBuffer stringBuffer) {
-        this.stringBuffer = stringBuffer;
-    }
+	public void setBufferedWriter(BufferedWriter bufferedWriter) {
+		this.bufferedWriter = bufferedWriter;
+	}
 
 }

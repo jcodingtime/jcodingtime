@@ -19,9 +19,12 @@ PARSER_END(Parser)
 /* RESERVED WORDS TO JCODINGTIME */
 
 TOKEN : {
-    < JCODINGTIME: "jcodingtime">{System.out.println("Palavra reservada jcodingtime coincide com -> "+image);}
-    | < INPUT: "input">{System.out.println("Palavra reservada input coincide com -> "+image);}
-    | < OUTPUT: "output">{System.out.println("Palavra reservada output coincide com -> "+image);}
+    < JCODINGTIME: "JCodingTime">{System.out.println("Palavra reservada JCodingTime coincide com -> "+image);}
+    | < INPUT: "Input">{System.out.println("Palavra reservada Input coincide com -> "+image);}
+    | < FPARAM: "firstParam">{System.out.println("Palavra reservada firstParam coincide com -> "+image);}
+    | < SPARAM: "secondParam">{System.out.println("Palavra reservada secondParam coincide com -> "+image);}
+    | < OUTPUT: "Output">{System.out.println("Palavra reservada Output coincide com -> "+image);}
+    | < RPARAM: "result">{System.out.println("Palavra reservada result coincide com -> "+image);}
 }
 
 /* SEPARATORS */
@@ -182,8 +185,8 @@ void Program():{}
 void signatures():{}
 {
   <AT><JCODINGTIME>
-  <AT><INPUT> <LPAREN> <DIGIT> <COMMA><DIGIT> <RPAREN> <SEMICOLON>
-  <AT><OUTPUT> <INTEGER> <SEMICOLON>
+  <AT><INPUT><LPAREN><FPARAM><ASSIGN><DIGIT><COMMA><SPARAM><ASSIGN><DIGIT><RPAREN>
+  <AT><OUTPUT><LPAREN><RPARAM><INTEGER><RPAREN>
 }
 
 void method():{}

@@ -8,7 +8,8 @@ public abstract class TestBuilder {
     }
 
     public abstract String generate();
-
+	public abstract void generateFile();
+	
     public StringBuffer getStringBuffer() {
         return stringBuffer;
     }
@@ -16,4 +17,5 @@ public abstract class TestBuilder {
     public void setStringBuffer(StringBuffer stringBuffer) {
         this.stringBuffer = stringBuffer;
     }
+
 }
