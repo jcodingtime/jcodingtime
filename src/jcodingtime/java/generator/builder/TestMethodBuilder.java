@@ -38,14 +38,23 @@ public class TestMethodBuilder extends TestBuilder {
 
         stringBuffer = new StringBuffer();
         
-        stringBuffer.append("@Test");
-        stringBuffer.append("\npublic "+ typeMethod + " test" +
+        stringBuffer.append("import org.junit.Test;\n");
+        
+        stringBuffer.append("import static org.junit.Assert.assertEquals;\n\n");
+        
+        stringBuffer.append("public class TestExample {\n");
+        
+        stringBuffer.append("\r@Test");
+        stringBuffer.append("\n\rpublic "+ typeMethod + " test" +
                 methodName.toUpperCase().substring(0,1) +
                 methodName.substring(1) + " " + paramenters + " {" +
                 "\n\texpected = " + output +
                 "\n\tobtained = "+ methodName + input +
                 "\n\tassertEquals(expected, obtained);" +
                 "\n}");
+        
+        stringBuffer.append("}");
+        
         return stringBuffer.toString();
     }
     
@@ -54,7 +63,7 @@ public class TestMethodBuilder extends TestBuilder {
     	
     	try {
     		//Specify the file name and path here
-    		 File file = new File("src/jcodingtime/java/example/output/ExampleTest.java");
+    		 File file = new File("src/jcodingtime/java/example/output/TestExample.java");
 
     		 /* This logic will make sure that the file 
     		  * gets created if it is not present at the
