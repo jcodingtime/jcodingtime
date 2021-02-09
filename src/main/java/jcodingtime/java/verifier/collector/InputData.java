@@ -1,7 +1,7 @@
-package verifier.collector;
+package jcodingtime.java.verifier.collector;
 
-import generator.builder.TestBuilder;
-import generator.builder.TestMethodBuilder;
+import jcodingtime.java.generator.builder.TestBuilder;
+import jcodingtime.java.generator.builder.TestMethodBuilder;
 import org.apache.log4j.Logger;
 
 import java.util.regex.Matcher;
@@ -20,7 +20,7 @@ public class InputData {
     private String parameters;
     private String source;
 
-    final static Logger logger = Logger.getLogger(InputData.class);
+    // final static Logger logger = Logger.getLogger(InputData.class);
 
     //constructor
     public InputData() {
@@ -96,7 +96,7 @@ public class InputData {
      */
     public void spliteData(){
 
-        logger.info("The capturing of input, output and method name was started.");
+    	//logger.info("The capturing of input, output and method name was started.");
 
         String describeInput = "";
         String describeOutput = "";
@@ -171,7 +171,7 @@ public class InputData {
                 setMethod(describeMethodName);
             }
         } else {
-            logger.error("Error, not found expression @JcodingTime");
+        	//logger.error("Error, not found expression @JcodingTime");
         }
         TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodName, typeMethod, paramenters, getOutput(), getInput());
         testMethodBuilder.generate();

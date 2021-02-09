@@ -1,8 +1,8 @@
-package example.input;
+package jcodingtime.java.example.input;
 
-import annotations.Input;
-import annotations.JCodingTime;
-import annotations.Output;
+import jcodingtime.java.annotations.Input;
+import jcodingtime.java.annotations.JCodingTime;
+import jcodingtime.java.annotations.Output;
 
 public class Example {
 	

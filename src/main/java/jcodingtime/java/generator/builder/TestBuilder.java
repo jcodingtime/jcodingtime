@@ -1,4 +1,4 @@
-package generator.builder;
+package jcodingtime.java.generator.builder;
 
 public abstract class TestBuilder {
 

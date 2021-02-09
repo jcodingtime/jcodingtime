@@ -1,4 +1,5 @@
-package annotations;
+package  jcodingtime.java.annotations;
+
 import java.lang.annotation.*;
 
 @Target(ElementType.METHOD)

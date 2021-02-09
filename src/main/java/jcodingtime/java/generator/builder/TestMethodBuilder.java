@@ -1,11 +1,11 @@
-package generator.builder;
+package jcodingtime.java.generator.builder;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class TestMethodBuilder extends TestBuilder {
 
@@ -17,7 +17,7 @@ public class TestMethodBuilder extends TestBuilder {
     private StringBuffer stringBuffer;
     private BufferedWriter bufferedWriter;
 
-    final static Logger logger = Logger.getLogger(TestMethodBuilder.class);
+    //final static Logger logger = Logger.getLogger(TestMethodBuilder.class);
 
 
     public TestMethodBuilder(String methodName, String typeMethod, String paramenters, String output, String input){
@@ -31,7 +31,7 @@ public class TestMethodBuilder extends TestBuilder {
     @Override
     public String generate() {
 
-        logger.info("The generation of method test was started.");
+    	//   logger.info("The generation of method test was started.");
 
         output = output.replace("\n", "").replace("\r", "");
         input = input.replace("\n", "").replace("\r", "");
@@ -80,7 +80,7 @@ public class TestMethodBuilder extends TestBuilder {
     		  System.out.println("File written Successfully");
         }
         catch(IOException e) {
-        	logger.error("Could not create this file", e);
+        	//logger.error("Could not create this file", e);
     	}
     }
     

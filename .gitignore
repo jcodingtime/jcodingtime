@@ -54,3 +54,4 @@ out/
 *.*~
 *~
 .merge_file*
+/target/
