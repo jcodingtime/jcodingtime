@@ -24,12 +24,12 @@ public class Main {
     //final static Logger logger = Logger.getLogger(Main.class);
     
     public static void main(String[] args) throws IOException {
+    	//File directory = new File("./");
+    	//System.out.println(directory.getAbsolutePath());
 
-    	File file = FileUtils.getFile("/tcc-jcodingtime/src/main/java/jcodingtime/java/example/input/Example.java");
+    	File file = FileUtils.getFile("/home/adailson/Documentos/tcc/tcc-jcodingtime/src/main/java/jcodingtime/java/example/input/Example.java");
 
         File tmpDir = FileUtils.getTempDirectory();
-
-        System.out.println(tmpDir.getName());
 
         //copy file to temp directory
         FileUtils.copyFileToDirectory(file, tmpDir);
@@ -40,11 +40,7 @@ public class Main {
         //get the content
         String source = FileUtils.readFileToString(newTempFile, Charset.defaultCharset());
 
-        //print the content
-        System.out.println(source);
-        
- 
-      	
+
       InputData inputData = new InputData();
 
       inputData.setSource(source);
