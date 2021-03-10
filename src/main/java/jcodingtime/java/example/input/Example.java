@@ -13,4 +13,11 @@ public class Example {
 		return firstParameter * secondParameter;
 	}
 	
+	@JCodingTime
+	@Input(firstParam=2, secondParam=2)
+	@Output(result=4)
+	public static int sumTwoNumbers(int firstParameter, int secondParameter) {
+		return firstParameter + secondParameter;
+	}
+	
 }

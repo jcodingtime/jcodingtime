@@ -21,29 +21,29 @@ import java.nio.file.Paths;
 
 public class Main {
 
-    //final static Logger logger = Logger.getLogger(Main.class);
-    
-    public static void main(String[] args) throws IOException {
-    	//File directory = new File("./");
-    	//System.out.println(directory.getAbsolutePath());
+	// final static Logger logger = Logger.getLogger(Main.class);
 
-    	File file = FileUtils.getFile("/home/adailson/Documentos/tcc/tcc-jcodingtime/src/main/java/jcodingtime/java/example/input/Example.java");
+	public static void main(String[] args) throws IOException {
+		// File directory = new File("./");
+		// System.out.println(directory.getAbsolutePath());
 
-        File tmpDir = FileUtils.getTempDirectory();
+		File file = FileUtils.getFile(
+				"/home/adailson/Documentos/tcc/tcc-jcodingtime/src/main/java/jcodingtime/java/example/input/Example.java");
 
-        //copy file to temp directory
-        FileUtils.copyFileToDirectory(file, tmpDir);
+		File tmpDir = FileUtils.getTempDirectory();
 
-        //create a new file
-        File newTempFile = FileUtils.getFile(tmpDir, file.getName());
+		// copy file to temp directory
+		FileUtils.copyFileToDirectory(file, tmpDir);
 
-        //get the content
-        String source = FileUtils.readFileToString(newTempFile, Charset.defaultCharset());
+		// create a new file
+		File newTempFile = FileUtils.getFile(tmpDir, file.getName());
 
+		// get the content
+		String source = FileUtils.readFileToString(newTempFile, Charset.defaultCharset());
 
-      InputData inputData = new InputData();
+		InputData inputData = new InputData();
 
-      inputData.setSource(source);
-      inputData.spliteData();
-    }
+		inputData.setSource(source);
+		inputData.spliteData();
+	}
 }

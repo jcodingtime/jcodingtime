@@ -11,231 +11,266 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * InputData
- * This class must receive parser input data
+ * InputData This class must receive parser input data
  */
 public class InputData {
 
-    private String scenario;
-    private String input;
-    private String output;
-    private String method;
-    private String parameters;
-    private String source;
+	private ArrayList<String> inputs;
+	private ArrayList<String> outputs;
+	private ArrayList<String> methods;
+	private ArrayList<String> parameters;
+	private String source;
 
-    // final static Logger logger = Logger.getLogger(InputData.class);
+	// final static Logger logger = Logger.getLogger(InputData.class);
 
-    //constructor
-    public InputData() {
-    }
+	// constructor
+	public InputData() {
+	}
 
-    //constructor
-    public InputData(String scenario, String input, String output, String method, String parameters, String source) {
-        this.scenario = scenario;
-        this.input = input;
-        this.output = output;
-        this.method = method;
-        this.parameters = parameters;
-        this.source = source;
-    }
+	// constructor
+	public InputData(ArrayList<String> inputs, ArrayList<String> outputs, ArrayList<String> methods,
+			ArrayList<String> parameters, String source) {
+		this.inputs = inputs;
+		this.outputs = outputs;
+		this.methods = methods;
+		this.parameters = parameters;
+		this.source = source;
+	}
 
-    public String getScenario() {
-        return scenario;
-    }
-    public void setScenario(String scenario) {
-        this.scenario = scenario;
-    }
+	public ArrayList<String> getInputs() {
+		return inputs;
+	}
 
-    public String getInput() {
-        return input;
-    }
-    public void setInput(String input) {
-        this.input = input;
-    }
+	public void setInputs(ArrayList<String> inputs) {
+		this.inputs = inputs;
+	}
 
-    public String getOutput() {
-        return output;
-    }
-    public void setOutput(String output) {
-        this.output = output;
-    }
+	public ArrayList<String> getOutputs() {
+		return outputs;
+	}
 
-    public String getMethod() {
-        return method;
-    }
-    public void setMethod(String method) {
-        this.method = method;
-    }
+	public void setOutputs(ArrayList<String> outputs) {
+		this.outputs = outputs;
+	}
 
-    public String getParameters() {
-        return parameters;
-    }
-    public void setParameters(String parameters) {
-        this.parameters = parameters;
-    }
+	public ArrayList<String> getMethods() {
+		return methods;
+	}
 
-    public String getSource() {
-        return source;
-    }
+	public void setMethods(ArrayList<String> methods) {
+		this.methods = methods;
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	public ArrayList<String> getParameters() {
+		return parameters;
+	}
 
-    /**
-     * Unifies the data
-     * @return inputData
-     */
-    private String buildData(){
-        String inputData = "@scenario " + getScenario() + "\n" +
-                "@input "+ getInput() + "\n" + ";" +
-                "@output "+ getOutput() + "\n" + ";" +
-                "public static " + getMethod() + "("+ getParameters() +")";
-        return inputData;
-    }
+	public void setParameters(ArrayList<String> parameters) {
+		this.parameters = parameters;
+	}
 
-    /**
-     * Splice the data to distribuite values for input, output and method name
-     */
-    public void spliteData(){
+	public String getSource() {
+		return source;
+	}
 
-    	//logger.info("The capturing of input, output and method name was started.");
+	public void setSource(String source) {
+		this.source = source;
+	}
 
-        String describeInput = "";
-        String describeOutput = "";
-        String describeMethodName = "";
-        String typeMethod = "";
+	private ArrayList<String> matchesOfString(String pattern, String matcher) {
+		ArrayList<String> arrMatchers = new ArrayList<String>();
+		Matcher mjct = Pattern.compile(pattern).matcher(matcher);
+		while (mjct.find()) {
+			arrMatchers.add(mjct.group());
+		}
+		return arrMatchers;
+	}
 
-        String input = getSource();
-        
-       
-        
-        Pattern pJCodingTime = Pattern.compile("@JCodingTime(.*?\n.*?@Input)");
-        Matcher mJCodingTime = pJCodingTime.matcher(input);
-        
-        String paramenters = "";
+	/**
+	 * Method for build inputs or outputs
+	 */
+	public ArrayList<String> buildData(ArrayList<String> matchers, ArrayList<String> describe, int beginIndex,
+			int endIndexToDecrement) {
+		ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
+		ArrayList<ArrayList<String>> tokens = new ArrayList<ArrayList<String>>();
+		ArrayList<String> dataToSet = new ArrayList<String>();
 
-        
-        if(mJCodingTime.find()) {
-        	
+		if (matchers.size() > 0) {
+			for (int i = 0; i < matchers.size(); i++) {
+				ArrayList<String> inputToken = new ArrayList<String>();
+				ArrayList<String> token = new ArrayList<String>();
 
-        	//get string range between @Input and @Output
-            Pattern pInput = Pattern.compile("@Input(.*?\n.*?.*?@Output)");
-            Matcher mInput = pInput.matcher(input);
+				describe.add(matchers.get(i).subSequence(beginIndex, matchers.get(i).length() - endIndexToDecrement)
+						.toString().trim());
 
-            if (mInput.find()) {
-            	describeInput = mInput.group().subSequence(6, mInput.group().length() - 7).toString().trim();
-            	
-            	//get numbers of the range
-	            Pattern p = Pattern.compile("\\d+");
-	            Matcher m = p.matcher(describeInput); //ex: 5 5
-	            
-	            ArrayList<String> inputs = new ArrayList<String>();
-	            int i = 0;
-	            
-	            while(m.find()) {
-	            	inputs.add(m.group());
-	            }
-	            
-	            //treatment for function format
-	            ArrayList<String> tokens = new ArrayList<String>();
-	            
-	            tokens.add("(");
-	            
-	            for (int j = 0; j < inputs.size(); j++) {
-	            	tokens.add(inputs.get(j));
+				// get numbers of the range
+				Pattern p = Pattern.compile("\\d+");
+				Matcher m = p.matcher(describe.get(i)); // ex: 5 5
+
+				while (m.find()) {
+					inputToken.add(m.group());
 				}
-	            tokens.add(")");
-	            
-	            StringBuffer sb = new StringBuffer();
-	            
-	            int g = 0;
-	            for (String s : tokens) {
-	               sb.append(s);
-	               if(g != 0 && g != tokens.size() -1 && g != tokens.size() -2) {
-	            	   sb.append(",");  
-	               }
-	               g++;
-	            }
-	            
-	            setInput(sb.toString()); //ex: (5,5)
-            }
-            
-            //get string range between @Output and public
-            Pattern pOutput = Pattern.compile("@Output(.*?\n.*?public)");
-            Matcher mOutput = pOutput.matcher(input);
 
-            if (mOutput.find())
-                describeOutput = mOutput.group().subSequence(7, mOutput.group().length() - 7).toString();
-          
-            //get numbers of the range
-            Pattern p = Pattern.compile("\\d+");
-            Matcher m = p.matcher(describeOutput); //ex: 5 5
-            
-            ArrayList<String> output = new ArrayList<String>();
-            
-            while(m.find()) {
-            	output.add(m.group());
-            }
-            
-            StringBuffer sb = new StringBuffer();
-            
-            int g = 0;
-            for (String s : output) {
-               sb.append(s);
-               if(g != 0 && g != output.size() -1 && g != output.size() -2) {
-            	   sb.append(",");  
-               }
-               g++;
-            }
-            
-            setOutput(sb.toString());
+				tokensTmp.add(inputToken);
 
-            Pattern pMethodName = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\()");
-            Matcher mMethodName = pMethodName.matcher(input);
-            
+				// treatment for function format
+				token.add("(");
 
-            if (mMethodName.find()) {
-                Pattern pParams = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\))");
-                Matcher mParams= pParams.matcher(input);
+				for (int j = 0; j < inputToken.size(); j++) {
+					token.add(tokensTmp.get(i).get(j));
+				}
+				token.add(")");
 
-                
-                if(mParams.find()){
-                    String fullMethod = mParams.group().subSequence(0, mParams.group().length()).toString();
-                    
-                    String spliteFullMethod[] = fullMethod.split("\\(");
-                    paramenters = "(" + spliteFullMethod[1];
-                   
-                }
+				tokens.add(token);
 
-                describeMethodName = mMethodName.group().subSequence(0, mMethodName.group().length() - 1).toString();
+				StringBuffer sb = new StringBuffer();
 
-                
-                if (describeMethodName.contains("int")) {
-                    describeMethodName = mMethodName.group().subSequence(4, mMethodName.group().length() - 1).toString();
-                    typeMethod = "int";
-                } else if (describeMethodName.contains("char")) {
-                    describeMethodName = mMethodName.group().subSequence(5, mMethodName.group().length() - 1).toString();
-                    typeMethod = "char";
-                } else if (describeMethodName.contains("void")) {
-                    describeMethodName = mMethodName.group().subSequence(5, mMethodName.group().length() - 1).toString();
-                    typeMethod = "void";
-                } else if (describeMethodName.contains("double")) {
-                    describeMethodName = mMethodName.group().subSequence(7, mMethodName.group().length() - 1).toString();
-                    typeMethod = "double";
-                } else {
-                    describeMethodName = mMethodName.group().subSequence(8, mMethodName.group().length() - 1).toString();
-                    typeMethod = "boolean";
-                }
-                
-                setMethod(describeMethodName);
-            }
-        } else {
-        	//logger.error("Error, not found expression @JcodingTime");
-        }
-        TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodName, typeMethod, paramenters, getOutput(), getInput());
-        testMethodBuilder.generate();
-        System.out.println(testMethodBuilder.getStringBuffer().toString());
-        testMethodBuilder.generateFile();
-    }
+				int g = 0;
+				for (String s : tokens.get(i)) {
+					sb.append(s);
+					if (g != 0 && g != tokens.get(i).size() - 1 && g != tokens.get(i).size() - 2) {
+						sb.append(",");
+					}
+					g++;
+				}
+				dataToSet.add(sb.toString());
+			}
+			return dataToSet;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Splice the data to distribuite values for input, output and method name
+	 */
+	public void spliteData() {
+
+		// logger.info("The capturing of input, output and method name was started.");
+
+		ArrayList<String> describeInputs = new ArrayList<String>();
+		ArrayList<String> describeOutputs = new ArrayList<String>();
+
+		String source = getSource();
+
+		Pattern pJCodingTime = Pattern.compile("@JCodingTime(.*?\n.*?@Input)");
+
+		ArrayList<String> matchersJcodingTime = this.matchesOfString("@JCodingTime(.*?\n.*?@Input)", source);
+
+//		System.out.print("matchersJcodingTime \n" + matchersJcodingTime + "\n");
+
+		if (matchersJcodingTime.size() > 0) {
+
+			// logical for get only inputs
+			// get string range between @Input and @Output
+			ArrayList<String> matchersInputOutput = this.matchesOfString("@Input(.*?\n.*?.*?@Output)", source);
+
+//			System.out.print("matchersInputOutput \n" + matchersInputOutput + "\n");
+
+			try {
+				ArrayList<String> inputsToSet = buildData(matchersInputOutput, describeInputs, 6, 7);
+				if (inputsToSet == null) {
+					throw new NullPointerException();
+				} else {
+					setInputs(inputsToSet); // ex: (5,5)
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				System.out.print("Undeclared @Input");
+			}
+
+//			System.out.print("inputs \n" + inputs + "\n");
+
+			// logical for get only outpus
+			// get string range between @Output and public
+			ArrayList<String> matchersOutputPublic = this.matchesOfString("@Output(.*?\n.*?public)", source);
+
+			ArrayList<ArrayList<String>> outputTokens = new ArrayList<ArrayList<String>>();
+			ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
+			ArrayList<String> outputstoSet = new ArrayList<String>();
+
+//			System.out.print("matchersOutputPublic \n" + matchersOutputPublic + "\n");
+			try {
+				ArrayList<String> outputsToSet = buildData(matchersOutputPublic, describeOutputs, 7, 7);
+				if (outputsToSet == null) {
+					throw new NullPointerException();
+				} else {
+					setOutputs(outputsToSet);
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				System.out.print("Undeclared @Output");
+			}
+
+//			System.out.print("outputs \n" + outputs + "\n");
+
+			// logical for get only methods
+			// get string range between @Output and public
+			ArrayList<String> matchersTypeMethod = this.matchesOfString("(int|float|char|void|double|boolean)(.*?\\()",
+					source);
+
+			Pattern pMethodName = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\()");
+//			Matcher mMethodName = pMethodName.matcher(input);
+
+			ArrayList<String> describeMethodNames = new ArrayList<String>();
+			ArrayList<String> typeMethods = new ArrayList<String>();
+			ArrayList<String> paramenters = new ArrayList<String>();
+
+			if (matchersTypeMethod.size() > 0) {
+
+				for (int i = 0; i < matchersTypeMethod.size(); i++) {
+
+//					System.out.print("matchersTypeMethod \n" + matchersTypeMethod + "\n");
+
+					String describeTmp = matchersTypeMethod.get(i)
+							.subSequence(0, matchersTypeMethod.get(i).length() - 1).toString();
+
+					if (describeTmp.contains("int")) {
+						describeTmp = matchersTypeMethod.get(i).subSequence(4, matchersTypeMethod.get(i).length() - 1)
+								.toString();
+						typeMethods.add("int");
+					} else if (describeTmp.contains("char")) {
+						describeTmp = matchersTypeMethod.get(i).subSequence(5, matchersTypeMethod.get(i).length() - 1)
+								.toString();
+						typeMethods.add("char");
+					} else if (describeTmp.contains("void")) {
+						describeTmp = matchersTypeMethod.get(i).subSequence(5, matchersTypeMethod.get(i).length() - 1)
+								.toString();
+
+						typeMethods.add("void");
+					} else if (describeTmp.contains("double")) {
+						describeTmp = matchersTypeMethod.get(i).subSequence(7, matchersTypeMethod.get(i).length() - 1)
+								.toString();
+						typeMethods.add("double");
+					} else {
+						describeTmp = matchersTypeMethod.get(i).subSequence(8, matchersTypeMethod.get(i).length() - 1)
+								.toString();
+						typeMethods.add("double");
+					}
+
+					describeMethodNames.add(describeTmp);
+
+					ArrayList<String> matchersFullMethod = this
+							.matchesOfString("(int|float|char|void|double|boolean)(.*?\\))", source);
+
+					String fullMethodtmp = matchersFullMethod.get(i);
+
+					Pattern pf = Pattern.compile("(\\(.*)");
+					Matcher mf = pf.matcher(fullMethodtmp);
+
+					while (mf.find()) {
+
+						paramenters.add(mf.group());
+					}
+				}
+			}
+			TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodNames, typeMethods, paramenters,
+					getOutputs(), getInputs());
+			testMethodBuilder.generate();
+			System.out.println(testMethodBuilder.getStringBuffer().toString());
+			testMethodBuilder.generateFile();
+		} else {
+			// logger.error("Error, not found expression @JcodingTime");
+		}
+	}
 }
