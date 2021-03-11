@@ -9,13 +9,13 @@ public abstract class TestBuilder {
 
     public abstract String generate();
 	public abstract void generateFile();
+	public abstract String generateLimitValues();
 	
-    public StringBuffer getStringBuffer() {
+	public StringBuffer getStringBuffer() {
         return stringBuffer;
     }
 
     public void setStringBuffer(StringBuffer stringBuffer) {
         this.stringBuffer = stringBuffer;
     }
-
 }

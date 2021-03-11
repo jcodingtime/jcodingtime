@@ -3,6 +3,7 @@ package jcodingtime.java.example.input;
 import jcodingtime.java.annotations.Input;
 import jcodingtime.java.annotations.JCodingTime;
 import jcodingtime.java.annotations.Output;
+import jcodingtime.java.annotations.LimitValue;
 
 public class Example {
 	
@@ -18,6 +19,24 @@ public class Example {
 	@Output(result=4)
 	public static int sumTwoNumbers(int firstParameter, int secondParameter) {
 		return firstParameter + secondParameter;
+	}
+	
+	@JCodingTime
+	@LimitValue(innerBoundary=0, upperBoundary=130)
+	public static int getAge(int age) {
+		return age;
+	}
+	
+	@JCodingTime
+	@LimitValue(innerBoundary=18, upperBoundary=130)
+	public static int olderAge(int age) {
+		return age;
+	}
+	
+	@JCodingTime
+	@LimitValue(innerBoundary=0, upperBoundary=18)
+	public static int underAge(int age) {
+		return age;
 	}
 	
 }
