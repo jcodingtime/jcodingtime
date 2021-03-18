@@ -9,7 +9,6 @@ public abstract class TestBuilder {
 
     public abstract String generate();
 	public abstract void generateFile();
-	public abstract String generateLimitValues();
 	
 	public StringBuffer getStringBuffer() {
         return stringBuffer;

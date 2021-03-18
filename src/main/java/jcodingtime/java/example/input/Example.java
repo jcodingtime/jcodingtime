@@ -27,16 +27,4 @@ public class Example {
 		return age;
 	}
 	
-	@JCodingTime
-	@LimitValue(innerBoundary=18, upperBoundary=130)
-	public static int olderAge(int age) {
-		return age;
-	}
-	
-	@JCodingTime
-	@LimitValue(innerBoundary=0, upperBoundary=18)
-	public static int underAge(int age) {
-		return age;
-	}
-	
 }

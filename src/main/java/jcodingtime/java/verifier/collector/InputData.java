@@ -70,7 +70,7 @@ public class InputData {
 	public void setParameters(ArrayList<String> parameters) {
 		this.parameters = parameters;
 	}
-	
+
 	public ArrayList<ArrayList<String>> getLimits() {
 		return limits;
 	}
@@ -96,6 +96,25 @@ public class InputData {
 		return arrMatchers;
 	}
 
+	private ArrayList<String> matchesPatterns(String firstPattern, String secondPattern, String thirdPattern,
+			String matcher) {
+		Matcher mjct = Pattern.compile(firstPattern).matcher(matcher);
+		ArrayList<String> arrMatchers = new ArrayList<String>();
+
+		while (mjct.find()) {
+			Matcher mjctsecond = Pattern.compile(secondPattern).matcher(mjct.group());
+			while (mjctsecond.find()) {
+				Matcher mjctfinal = Pattern.compile(thirdPattern).matcher(mjctsecond.group());
+				while (mjctfinal.find()) {
+					arrMatchers.add(mjctfinal.group());
+				}
+
+			}
+		}
+
+		return arrMatchers;
+	}
+
 	/**
 	 * Method for build inputs or outputs
 	 */
@@ -104,7 +123,7 @@ public class InputData {
 		ArrayList<ArrayList<String>> tokens = new ArrayList<ArrayList<String>>();
 		ArrayList<String> dataToSet = new ArrayList<String>();
 		ArrayList<String> describe = new ArrayList<String>();
-		
+
 		if (matchers.size() > 0) {
 			for (int i = 0; i < matchers.size(); i++) {
 				ArrayList<String> inputToken = new ArrayList<String>();
@@ -158,7 +177,7 @@ public class InputData {
 		ArrayList<ArrayList<String>> tokens = new ArrayList<ArrayList<String>>();
 		ArrayList<String> dataToSet = new ArrayList<String>();
 		ArrayList<String> describe = new ArrayList<String>();
-		
+
 		if (matchers.size() > 0) {
 			for (int i = 0; i < matchers.size(); i++) {
 				ArrayList<String> inputToken = new ArrayList<String>();
@@ -188,7 +207,7 @@ public class InputData {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Splice the data to distribuite values for input, output and method name
 	 */
@@ -199,146 +218,94 @@ public class InputData {
 		String source = getSource();
 
 		ArrayList<String> matchersJcodingTime = this.matchesOfString("@JCodingTime(.*?\n.*?@Input)", source);
-		
+
 		ArrayList<String> matchersJCTLimitValue = this.matchesOfString("@JCodingTime(.*?\n.*?@LimitValue)", source);
 
-//		System.out.print("matchersJcodingTime \n" + matchersJcodingTime + "\n");
-//
-//		if (matchersJcodingTime.size() > 0) {
-//
-//			// logical for get only inputs
-//			// get string range between @Input and @Output
-//			ArrayList<String> matchersInputOutput = this.matchesOfString("@Input(.*?\n.*?.*?@Output)", source);
-//
-////			System.out.print("matchersInputOutput \n" + matchersInputOutput + "\n");
-//
-//			try {
-//				ArrayList<String> inputsToSet = buildData(matchersInputOutput);
-//				if (inputsToSet == null) {
-//					throw new NullPointerException();
-//				} else {
-//					setInputs(inputsToSet); // ex: (5,5)
-//				}
-//			} catch (NullPointerException e) {
-//				e.printStackTrace();
-//				System.out.print("Undeclared @Input");
-//			}
-//
-////			System.out.print("inputs \n" + inputs + "\n");
-//
-//			// logical for get only outpus
-//			// get string range between @Output and public
-//			ArrayList<String> matchersOutputPublic = this.matchesOfString("@Output(.*?\n.*?public)", source);
-//
-//			ArrayList<ArrayList<String>> outputTokens = new ArrayList<ArrayList<String>>();
-//			ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
-//			ArrayList<String> outputstoSet = new ArrayList<String>();
-//
-////			System.out.print("matchersOutputPublic \n" + matchersOutputPublic + "\n");
-//			try {
-//				ArrayList<String> outputsToSet = buildData(matchersOutputPublic);
-//				if (outputsToSet == null) {
-//					throw new NullPointerException();
-//				} else {
-//					setOutputs(outputsToSet);
-//				}
-//			} catch (NullPointerException e) {
-//				e.printStackTrace();
-//				System.out.print("Undeclared @Output");
-//			}
-//
-////			System.out.print("outputs \n" + outputs + "\n");
-//
-//			// logical for get only methods
-//			// get string range between @Output and public
-//			ArrayList<String> matchersTypeMethod = this.matchesOfString("(int|float|char|void|double|boolean)(.*?\\()",
-//					source);
-//
-//			Pattern pMethodName = Pattern.compile("(int|float|char|void|double|boolean)(.*?\\()");
-////			Matcher mMethodName = pMethodName.matcher(input);
-//
-//			ArrayList<String> describeMethodNames = new ArrayList<String>();
-//			ArrayList<String> typeMethods = new ArrayList<String>();
-//			ArrayList<String> paramenters = new ArrayList<String>();
-//
-//			if (matchersTypeMethod.size() > 0) {
-//
-//				for (int i = 0; i < matchersTypeMethod.size(); i++) {
-//
-////					System.out.print("matchersTypeMethod \n" + matchersTypeMethod + "\n");
-//
-//					String describeTmp = matchersTypeMethod.get(i)
-//							.subSequence(0, matchersTypeMethod.get(i).length() - 1).toString();
-//
-//					if (describeTmp.contains("int")) {
-//						describeTmp = matchersTypeMethod.get(i).subSequence(4, matchersTypeMethod.get(i).length() - 1)
-//								.toString();
-//						typeMethods.add("int");
-//					} else if (describeTmp.contains("char")) {
-//						describeTmp = matchersTypeMethod.get(i).subSequence(5, matchersTypeMethod.get(i).length() - 1)
-//								.toString();
-//						typeMethods.add("char");
-//					} else if (describeTmp.contains("void")) {
-//						describeTmp = matchersTypeMethod.get(i).subSequence(5, matchersTypeMethod.get(i).length() - 1)
-//								.toString();
-//
-//						typeMethods.add("void");
-//					} else if (describeTmp.contains("double")) {
-//						describeTmp = matchersTypeMethod.get(i).subSequence(7, matchersTypeMethod.get(i).length() - 1)
-//								.toString();
-//						typeMethods.add("double");
-//					} else {
-//						describeTmp = matchersTypeMethod.get(i).subSequence(8, matchersTypeMethod.get(i).length() - 1)
-//								.toString();
-//						typeMethods.add("double");
-//					}
-//
-//					describeMethodNames.add(describeTmp);
-//
-//					ArrayList<String> matchersFullMethod = this
-//							.matchesOfString("(int|float|char|void|double|boolean)(.*?\\))", source);
-//
-//					String fullMethodtmp = matchersFullMethod.get(i);
-//
-//					Pattern pf = Pattern.compile("(\\(.*)");
-//					Matcher mf = pf.matcher(fullMethodtmp);
-//
-//					while (mf.find()) {
-//
-//						paramenters.add(mf.group());
-//					}
-//				}
-//			}
-//			TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodNames, typeMethods, paramenters,
-//					getOutputs(), getInputs(), limits);
-//			testMethodBuilder.generate();
-//			System.out.println(testMethodBuilder.getStringBuffer().toString());
-//			testMethodBuilder.generateFile();
-//		} else {
-//			// Nothing TODO
-//		}
-		
+		ArrayList<String> matchersOnlyTypeMethod = this.matchesPatterns("@LimitValue(.*?\n.*?\n)", "public(.*?\n)",
+				"(\\w+\\s\\w+\\()", source);
+		ArrayList<String> describeMethodNames = new ArrayList<String>();
+		ArrayList<String> typeMethods = new ArrayList<String>();
+		ArrayList<String> matchersMethods = this.matchesPatterns("@Output(.*?\n.*?\n)", "public(.*?\n)",
+				"(\\w+\\s\\w+\\()", source);
+
+		if (matchersJcodingTime.size() > 0) {
+
+			// logical for get only inputs
+			// get string range between @Input and @Output
+			ArrayList<String> matchersInputOutput = this.matchesOfString("@Input(.*?\n.*?.*?@Output)", source);
+
+			try {
+				ArrayList<String> inputsToSet = buildData(matchersInputOutput);
+				if (inputsToSet == null) {
+					throw new NullPointerException();
+				} else {
+					setInputs(inputsToSet); // ex: (5,5)
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				System.out.print("Undeclared @Input");
+			}
+
+			// logical for get only outpus
+			// get string range between @Output and public
+			ArrayList<String> matchersOutputPublic = this.matchesOfString("@Output(.*?\n.*?public)", source);
+
+			ArrayList<ArrayList<String>> outputTokens = new ArrayList<ArrayList<String>>();
+			ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
+			ArrayList<String> outputstoSet = new ArrayList<String>();
+
+			try {
+				ArrayList<String> outputsToSet = buildData(matchersOutputPublic);
+				if (outputsToSet == null) {
+					throw new NullPointerException();
+				} else {
+					setOutputs(outputsToSet);
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				System.out.print("Undeclared @Output");
+			}
+
+			if (matchersMethods.size() > 0) {
+
+				for (int i = 0; i < matchersMethods.size(); i++) {
+					String[] parts = matchersMethods.get(i).split("\\s+");
+
+					typeMethods.add(parts[0]);
+					describeMethodNames.add(parts[1].replace("(", ""));
+				}
+			}
+		} else {
+			// Nothing TODO
+		}
+
 		if (matchersJCTLimitValue.size() > 0) {
 			ArrayList<String> matchersLimitValuePublic = this.matchesOfString("@LimitValue(.*?\n.*?public)", source);
-			
+
 			ArrayList<ArrayList<String>> limitsToSet = buildLimits(matchersLimitValuePublic);
-			
-			System.out.println("limitsToSet " + limitsToSet);
+
 			if (limitsToSet == null) {
 				throw new NullPointerException();
 			} else {
 				setLimits(limitsToSet);
 			}
-			
-			TestBuilder testMethodBuilder = new TestMethodBuilder(null, null, null, getOutputs(), getInputs(), limits);
-			
-			testMethodBuilder.generateLimitValues();
-			System.out.println(testMethodBuilder.getStringBuffer().toString());
-//			testMethodBuilder.generateFile();
+			if (matchersOnlyTypeMethod.size() > 0) {
+				for (int i = 0; i < matchersOnlyTypeMethod.size(); i++) {
+					String[] parts = matchersOnlyTypeMethod.get(i).split("\\s+");
 
+					typeMethods.add(parts[0]);
+					describeMethodNames.add(parts[1].replace("(", ""));
+				}
+			}
 		} else {
 			// Nothing TODO
 		}
-		
+
+		TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodNames, typeMethods, parameters,
+				getOutputs(), getInputs(), limits);
+		testMethodBuilder.generate();
+//		System.out.println(testMethodBuilder.getStringBuffer().toString());
+		testMethodBuilder.generateFile();
+
 	}
 }
