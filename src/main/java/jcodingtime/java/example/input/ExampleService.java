@@ -2,10 +2,12 @@ package jcodingtime.java.example.input;
 
 import jcodingtime.java.annotations.Input;
 import jcodingtime.java.annotations.JCodingTime;
-import jcodingtime.java.annotations.Output;
 import jcodingtime.java.annotations.LimitValue;
+import jcodingtime.java.annotations.Output;
+//import jcodingtime.java.annotations.Domain;
 
-public class Example {
+//@Domain(target = User.class)
+public class ExampleService {
 	
 	@JCodingTime
 	@Input(firstParam=5, secondParam=5)

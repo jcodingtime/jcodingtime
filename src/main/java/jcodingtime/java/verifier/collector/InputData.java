@@ -1,14 +1,12 @@
 package jcodingtime.java.verifier.collector;
 
-import jcodingtime.java.generator.builder.TestBuilder;
-import jcodingtime.java.generator.builder.TestMethodBuilder;
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jcodingtime.java.exceptions.MatchNotExistException;
+import jcodingtime.java.generator.builder.TestBuilder;
+import jcodingtime.java.generator.builder.TestMethodBuilder;
 
 /**
  * InputData This class must receive parser input data
@@ -223,89 +221,106 @@ public class InputData {
 
 		ArrayList<String> matchersOnlyTypeMethod = this.matchesPatterns("@LimitValue(.*?\n.*?\n)", "public(.*?\n)",
 				"(\\w+\\s\\w+\\()", source);
+		ArrayList<String> matchersParams = this.matchesPatterns("@LimitValue(.*?\n.*?\n)", "public(.*?\n)",
+				"(\\w+\\s\\w+\\))", source);
 		ArrayList<String> describeMethodNames = new ArrayList<String>();
 		ArrayList<String> typeMethods = new ArrayList<String>();
 		ArrayList<String> matchersMethods = this.matchesPatterns("@Output(.*?\n.*?\n)", "public(.*?\n)",
 				"(\\w+\\s\\w+\\()", source);
 
-		if (matchersJcodingTime.size() > 0) {
+		try {
 
-			// logical for get only inputs
-			// get string range between @Input and @Output
-			ArrayList<String> matchersInputOutput = this.matchesOfString("@Input(.*?\n.*?.*?@Output)", source);
+			if (matchersJcodingTime.size() > 0) {
 
-			try {
-				ArrayList<String> inputsToSet = buildData(matchersInputOutput);
-				if (inputsToSet == null) {
+				// logical for get only inputs
+				// get string range between @Input and @Output
+				ArrayList<String> matchersInputOutput = this.matchesOfString("@Input(.*?\n.*?.*?@Output)", source);
+
+				try {
+					ArrayList<String> inputsToSet = buildData(matchersInputOutput);
+					if (inputsToSet == null) {
+						throw new NullPointerException();
+					} else {
+						setInputs(inputsToSet); // ex: (5,5)
+					}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+					System.out.print("Undeclared @Input");
+				}
+
+				// logical for get only outpus
+				// get string range between @Output and public
+				ArrayList<String> matchersOutputPublic = this.matchesOfString("@Output(.*?\n.*?public)", source);
+
+				ArrayList<ArrayList<String>> outputTokens = new ArrayList<ArrayList<String>>();
+				ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
+				ArrayList<String> outputstoSet = new ArrayList<String>();
+
+				try {
+					ArrayList<String> outputsToSet = buildData(matchersOutputPublic);
+					if (outputsToSet == null) {
+						throw new NullPointerException();
+					} else {
+						setOutputs(outputsToSet);
+					}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+					System.out.print("Undeclared @Output");
+				}
+
+				if (matchersMethods.size() > 0) {
+
+					for (int i = 0; i < matchersMethods.size(); i++) {
+						String[] parts = matchersMethods.get(i).split("\\s+");
+
+						typeMethods.add(parts[0]);
+						describeMethodNames.add(parts[1].replace("(", ""));
+					}
+				}
+			}
+
+			if (matchersJCTLimitValue.size() > 0) {
+				ArrayList<String> matchersLimitValuePublic = this.matchesOfString("@LimitValue(.*?\n.*?public)",
+						source);
+
+				ArrayList<ArrayList<String>> limitsToSet = buildLimits(matchersLimitValuePublic);
+				
+				ArrayList<String> paramsTmp = new ArrayList<String>();
+				
+				if (limitsToSet == null) {
 					throw new NullPointerException();
 				} else {
-					setInputs(inputsToSet); // ex: (5,5)
+					setLimits(limitsToSet);
 				}
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-				System.out.print("Undeclared @Input");
-			}
+				if (matchersOnlyTypeMethod.size() > 0) {
+					for (int i = 0; i < matchersOnlyTypeMethod.size(); i++) {
+						String[] parts = matchersOnlyTypeMethod.get(i).split("\\s+");
 
-			// logical for get only outpus
-			// get string range between @Output and public
-			ArrayList<String> matchersOutputPublic = this.matchesOfString("@Output(.*?\n.*?public)", source);
-
-			ArrayList<ArrayList<String>> outputTokens = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
-			ArrayList<String> outputstoSet = new ArrayList<String>();
-
-			try {
-				ArrayList<String> outputsToSet = buildData(matchersOutputPublic);
-				if (outputsToSet == null) {
-					throw new NullPointerException();
-				} else {
-					setOutputs(outputsToSet);
+						typeMethods.add(parts[0]);
+						describeMethodNames.add(parts[1].replace("(", ""));
+					}
 				}
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-				System.out.print("Undeclared @Output");
-			}
-
-			if (matchersMethods.size() > 0) {
-
-				for (int i = 0; i < matchersMethods.size(); i++) {
-					String[] parts = matchersMethods.get(i).split("\\s+");
-
-					typeMethods.add(parts[0]);
-					describeMethodNames.add(parts[1].replace("(", ""));
+				if (matchersParams.size() > 0) {
+					for (int i = 0; i < matchersParams.size(); i++) {
+						paramsTmp.add(matchersParams.get(i).replace(")", ""));
+					}
 				}
-			}
-		} else {
-			// Nothing TODO
-		}
-
-		if (matchersJCTLimitValue.size() > 0) {
-			ArrayList<String> matchersLimitValuePublic = this.matchesOfString("@LimitValue(.*?\n.*?public)", source);
-
-			ArrayList<ArrayList<String>> limitsToSet = buildLimits(matchersLimitValuePublic);
-
-			if (limitsToSet == null) {
-				throw new NullPointerException();
+				setParameters(paramsTmp);
 			} else {
-				setLimits(limitsToSet);
+				throw new MatchNotExistException("Clause @JCodingTime not found.");
 			}
-			if (matchersOnlyTypeMethod.size() > 0) {
-				for (int i = 0; i < matchersOnlyTypeMethod.size(); i++) {
-					String[] parts = matchersOnlyTypeMethod.get(i).split("\\s+");
-
-					typeMethods.add(parts[0]);
-					describeMethodNames.add(parts[1].replace("(", ""));
-				}
-			}
-		} else {
-			// Nothing TODO
+		} catch (MatchNotExistException e) {
+			System.out.println("Please, put the clause @JCodingTime inside the method for generate the tests.");
 		}
 
 		TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodNames, typeMethods, parameters,
 				getOutputs(), getInputs(), limits);
 		testMethodBuilder.generate();
-//		System.out.println(testMethodBuilder.getStringBuffer().toString());
-		testMethodBuilder.generateFile();
+		
+		if (testMethodBuilder.getStringBuffer() != null) {
+			System.out.println(testMethodBuilder.getStringBuffer().toString());
+			testMethodBuilder.generateFile();
+		}
 
 	}
 }

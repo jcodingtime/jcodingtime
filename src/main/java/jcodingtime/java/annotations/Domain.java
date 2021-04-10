@@ -1,13 +1,11 @@
 package jcodingtime.java.annotations;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
-public @interface Input {
-	int firstParam();
-	int secondParam();
+public @interface Domain {
+	Class<?> target();
 }
