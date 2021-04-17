@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import jcodingtime.java.exceptions.MatchNotExistException;
 import jcodingtime.java.generator.builder.TestBuilder;
-import jcodingtime.java.generator.builder.TestMethodBuilder;
+import jcodingtime.java.generator.builder.TestFileBuilder;
 
 /**
  * InputData This class must receive parser input data
@@ -21,13 +21,9 @@ public class InputData {
 	private String source;
 	private String className;
 
-	// final static Logger logger = Logger.getLogger(InputData.class);
-
-	// constructor
 	public InputData() {
 	}
 
-	// constructor
 	public InputData(ArrayList<String> inputs, ArrayList<String> outputs, ArrayList<String> methods,
 			ArrayList<String> parameters, ArrayList<ArrayList<String>> limits, String source, String className) {
 		this.inputs = inputs;
@@ -86,7 +82,7 @@ public class InputData {
 	public void setSource(String source) {
 		this.source = source;
 	}
-	
+
 	public String getClassName() {
 		return className;
 	}
@@ -225,14 +221,14 @@ public class InputData {
 		// logger.info("The capturing of input, output and method name was started.");
 
 		String source = getSource();
-		
-		
+
+
 		/**
 		 * Verification for @JCodingTime, @Input and @Output annotations
 		 */
 		ArrayList<String> matchersJcodingTime = this.matchesOfString("@JCodingTime(.*?\n.*?@Input)", source);
 
-		
+
 		ArrayList<String> matchersJCTLimitValue = this.matchesOfString("@JCodingTime(.*?\n.*?@LimitValue)", source);
 
 		ArrayList<String> matchersOnlyTypeMethod = this.matchesPatterns("@LimitValue(.*?\n.*?\n)", "public(.*?\n)",
@@ -243,20 +239,20 @@ public class InputData {
 		ArrayList<String> typeMethods = new ArrayList<String>();
 		ArrayList<String> matchersMethods = this.matchesPatterns("@Output(.*?\n.*?\n)", "public(.*?\n)",
 				"(\\w+\\s\\w+\\()", source);
-		
+
 		/**
 		 * Verification for className
 		 */
 		Matcher matcherDomain = Pattern.compile("class(.*?\n)").matcher(source);
 
 		int index = 0;
-		
+
 		while (matcherDomain.find() && index == 0) {
 			String[] parts = matcherDomain.group().split("\s");
 			setClassName(parts[1]);
 			index+=1;
 		}
-		
+
 		try {
 
 			if (matchersJcodingTime.size() > 0) {
@@ -313,9 +309,9 @@ public class InputData {
 						source);
 
 				ArrayList<ArrayList<String>> limitsToSet = buildLimits(matchersLimitValuePublic);
-				
+
 				ArrayList<String> paramsTmp = new ArrayList<String>();
-				
+
 				if (limitsToSet == null) {
 					throw new NullPointerException();
 				} else {
@@ -341,12 +337,33 @@ public class InputData {
 		} catch (MatchNotExistException e) {
 			System.out.println("Please, put the clause @JCodingTime inside the method for generate the tests.");
 		}
+		System.out.println("describeMethodNames/n");
+		System.out.println(describeMethodNames);
 
-		TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodNames, typeMethods, parameters,
+		System.out.println("/ntypeMethods:/n");
+		System.out.println(typeMethods);
+
+		System.out.println("/parameters:/n");
+		System.out.println(parameters);
+
+		System.out.println("/getOutputs():/n");
+		System.out.println(getOutputs());
+
+		System.out.println("/getInputs():/n");
+		System.out.println(getInputs());
+
+		System.out.println("/limits:/n");
+		System.out.println(limits);
+
+		System.out.println("/className:/n");
+		System.out.println(className);
+
+		TestBuilder testMethodBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters,
 				getOutputs(), getInputs(), limits, className);
 		testMethodBuilder.generate();
-		
+
 		if (testMethodBuilder.getStringBuffer() != null) {
+			System.out.println(testMethodBuilder.getStringBuffer().toString());
 			testMethodBuilder.generateFile();
 		}
 
