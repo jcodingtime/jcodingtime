@@ -91,7 +91,6 @@ public class InputData {
 		this.className = className;
 	}
 
-
 	private ArrayList<String> matchesOfString(String pattern, String matcher) {
 		ArrayList<String> arrMatchers = new ArrayList<String>();
 		Matcher mjct = Pattern.compile(pattern).matcher(matcher);
@@ -123,7 +122,7 @@ public class InputData {
 	/**
 	 * Method for build inputs or outputs
 	 */
-	public ArrayList<String> buildData(ArrayList<String> matchers) {
+	private ArrayList<String> buildData(ArrayList<String> matchers) {
 		ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
 		ArrayList<ArrayList<String>> tokens = new ArrayList<ArrayList<String>>();
 		ArrayList<String> dataToSet = new ArrayList<String>();
@@ -177,7 +176,7 @@ public class InputData {
 	/**
 	 * Method for build limits cases
 	 */
-	public ArrayList<ArrayList<String>> buildLimits(ArrayList<String> matchers) {
+	private ArrayList<ArrayList<String>> buildLimits(ArrayList<String> matchers) {
 		ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
 		ArrayList<ArrayList<String>> tokens = new ArrayList<ArrayList<String>>();
 		ArrayList<String> dataToSet = new ArrayList<String>();
@@ -217,12 +216,7 @@ public class InputData {
 	 * Splice the data to distribuite values for input, output and method name
 	 */
 	public void spliteData() {
-
-		// logger.info("The capturing of input, output and method name was started.");
-
 		String source = getSource();
-
-
 		/**
 		 * Verification for @JCodingTime, @Input and @Output annotations
 		 */
@@ -337,26 +331,6 @@ public class InputData {
 		} catch (MatchNotExistException e) {
 			System.out.println("Please, put the clause @JCodingTime inside the method for generate the tests.");
 		}
-		System.out.println("describeMethodNames/n");
-		System.out.println(describeMethodNames);
-
-		System.out.println("/ntypeMethods:/n");
-		System.out.println(typeMethods);
-
-		System.out.println("/parameters:/n");
-		System.out.println(parameters);
-
-		System.out.println("/getOutputs():/n");
-		System.out.println(getOutputs());
-
-		System.out.println("/getInputs():/n");
-		System.out.println(getInputs());
-
-		System.out.println("/limits:/n");
-		System.out.println(limits);
-
-		System.out.println("/className:/n");
-		System.out.println(className);
 
 		TestBuilder testMethodBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters,
 				getOutputs(), getInputs(), limits, className);

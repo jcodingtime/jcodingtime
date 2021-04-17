@@ -1,39 +1,59 @@
 package jcodingtime.java.generator.builder;
 import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Unit tests for TestFileBuilder.
  */
 public class TestFileBuilderTest {
-    TestBuilder testBuilder;
-    TestFileBuilder testFileBuilder;
-    ArrayList<String> describeMethodNames = new ArrayList<>(Arrays.asList("multiplyTwoNumbers", "sumTwoNumbers", "setAge"));
-    ArrayList<String> typeMethods = new ArrayList<>(Arrays.asList("int", "int", "int"));
-    ArrayList<String> parameters = new ArrayList<>(Arrays.asList("int age"));
-    ArrayList<String> outputs = new ArrayList<>(Arrays.asList("(25)", "(4)"));
-    ArrayList<String> inputs = new ArrayList<>(Arrays.asList("(5,5)", "(2,2)"));
-    ArrayList<String> firstArray = new ArrayList<>(Arrays.asList("0", "130"));
-    ArrayList<ArrayList<String>> limits = new ArrayList<ArrayList<String>>(Arrays.asList(firstArray));
-    String className = "Example";
+    private TestBuilder testBuilder;
+    private TestFileBuilder testFileBuilder;
+    private ArrayList<String> describeMethodNames;
+    private ArrayList<String> typeMethods;
+    private ArrayList<String> parameters;
+    private ArrayList<String> outputs;
+    private ArrayList<String> inputs;
+    private ArrayList<String> firstArray;
+
+    private ArrayList<ArrayList<String>> limits;
+    private String className;
+    private File directory;
+    private File file;
+
+    @BeforeEach
+    void init() {
+        describeMethodNames = new ArrayList<>(Arrays.asList("multiplyTwoNumbers", "sumTwoNumbers", "setAge"));
+        typeMethods = new ArrayList<>(Arrays.asList("int", "int", "int"));
+        parameters = new ArrayList<>(Arrays.asList("int age"));
+        outputs = new ArrayList<>(Arrays.asList("(25)", "(4)"));
+        inputs = new ArrayList<>(Arrays.asList("(5,5)", "(2,2)"));
+        firstArray = new ArrayList<>(Arrays.asList("0", "130"));
+        limits = new ArrayList<ArrayList<String>>(Arrays.asList(firstArray));
+        className = "Example";
+
+        testBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters, outputs,inputs, limits, className);
+        testBuilder.generate();
+        testBuilder.generateFile();
+        directory = new File("src/test/java/jct/");
+        file = new File("src/test/java/jct/"+className+"Test.java");
+
+        testFileBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters, outputs,inputs, limits, className);
+    }
 
     @Test
     void verifyStringGenerateIsNotEmpty() {
-        testBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters, outputs,inputs, limits, className);
         assertThat(testBuilder.generate()).isNotEmpty();
     }
 
     @Test
     void validateFields() {
-        testFileBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters, outputs,inputs, limits, className);
         ArrayList<String> describeMethodNames = new ArrayList<>(Arrays.asList("multiplyTwoNumbers", "sumTwoNumbers", "setAge"));
         ArrayList<String> typeMethods = new ArrayList<>(Arrays.asList("int", "int", "int"));
         ArrayList<String> parameters = new ArrayList<>(Arrays.asList("int age"));
@@ -44,20 +64,20 @@ public class TestFileBuilderTest {
 
         assertThat(testFileBuilder.getMethodNames()).isEqualTo(describeMethodNames);
         assertThat(testFileBuilder.getTypeMethods()).isEqualTo(typeMethods);
+        assertThat(testFileBuilder.getParameters()).isEqualTo(parameters);
         assertThat(testFileBuilder.getOutputs()).isEqualTo(outputs);
         assertThat(testFileBuilder.getInputs()).isEqualTo(inputs);
         assertThat(testFileBuilder.getLimits()).isEqualTo(limits);
     }
 
     @Test
-    void verifyGenerateFile() {
-        testBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters, outputs,inputs, limits, className);
-        testBuilder.generate();
-        testBuilder.generateFile();
-        File directory = new File("src/test/java/jct/");
+    void verifyExistFile() {
         assertThat(directory.exists()).isEqualTo(true);
-        File file = new File("src/test/java/jct/"+className+"Test.java");
         assertThat(file.exists()).isEqualTo(true);
+    }
+
+    @AfterEach
+    void teardown() {
         file.delete();
         directory.delete();
     }
