@@ -1,13 +1,11 @@
-package jcodingtime.java.example.input;
+package jcodingtime.java.example;
 
 import jcodingtime.java.annotations.Input;
 import jcodingtime.java.annotations.JCodingTime;
 import jcodingtime.java.annotations.LimitValue;
 import jcodingtime.java.annotations.Output;
-//import jcodingtime.java.annotations.Domain;
 
-//@Domain(target = User.class)
-public class ExampleService {
+public class Example {
 	
 	@JCodingTime
 	@Input(firstParam=5, secondParam=5)
@@ -25,7 +23,7 @@ public class ExampleService {
 	
 	@JCodingTime
 	@LimitValue(innerBoundary=0, upperBoundary=130)
-	public static int getAge(int age) {
+	public static int setAge(int age) {
 		return age;
 	}
 	

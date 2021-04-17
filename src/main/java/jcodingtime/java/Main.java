@@ -6,8 +6,7 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
 
-import jcodingtime.java.annotations.Domain;
-import jcodingtime.java.annotations.JCodingTime;
+import jcodingtime.java.exceptions.NotFoundPathException;
 import jcodingtime.java.verifier.collector.InputData;
 
 public class Main {
@@ -21,9 +20,7 @@ public class Main {
 		if (args.length > 0) {
 			file = FileUtils.getFile(args[0]);
 		} else {
-//			String path = "/home/adailson/Documentos/myApp/src/main/java/com/mycompany/myapp/service/UserService.java";
-			String path = "/home/adailson/Documentos/tcc/tcc-jcodingtime/src/main/java/jcodingtime/java/example/input/Address.java";
-//			String path = "/home/adailson/Documentos/tcc/tcc-jcodingtime/src/main/java/jcodingtime/java/example/input/ExampleService.java";
+			String path = "src/main/java/jcodingtime/java/example/Example.java";
 			file = FileUtils.getFile(path);
 		}
 		

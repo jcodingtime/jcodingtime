@@ -19,6 +19,7 @@ public class InputData {
 	private ArrayList<String> parameters;
 	private ArrayList<ArrayList<String>> limits;
 	private String source;
+	private String className;
 
 	// final static Logger logger = Logger.getLogger(InputData.class);
 
@@ -28,13 +29,14 @@ public class InputData {
 
 	// constructor
 	public InputData(ArrayList<String> inputs, ArrayList<String> outputs, ArrayList<String> methods,
-			ArrayList<String> parameters, ArrayList<ArrayList<String>> limits, String source) {
+			ArrayList<String> parameters, ArrayList<ArrayList<String>> limits, String source, String className) {
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.methods = methods;
 		this.parameters = parameters;
 		this.limits = limits;
 		this.source = source;
+		this.className = className;
 	}
 
 	public ArrayList<String> getInputs() {
@@ -84,6 +86,15 @@ public class InputData {
 	public void setSource(String source) {
 		this.source = source;
 	}
+	
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
 
 	private ArrayList<String> matchesOfString(String pattern, String matcher) {
 		ArrayList<String> arrMatchers = new ArrayList<String>();
@@ -214,9 +225,14 @@ public class InputData {
 		// logger.info("The capturing of input, output and method name was started.");
 
 		String source = getSource();
-
+		
+		
+		/**
+		 * Verification for @JCodingTime, @Input and @Output annotations
+		 */
 		ArrayList<String> matchersJcodingTime = this.matchesOfString("@JCodingTime(.*?\n.*?@Input)", source);
 
+		
 		ArrayList<String> matchersJCTLimitValue = this.matchesOfString("@JCodingTime(.*?\n.*?@LimitValue)", source);
 
 		ArrayList<String> matchersOnlyTypeMethod = this.matchesPatterns("@LimitValue(.*?\n.*?\n)", "public(.*?\n)",
@@ -227,7 +243,20 @@ public class InputData {
 		ArrayList<String> typeMethods = new ArrayList<String>();
 		ArrayList<String> matchersMethods = this.matchesPatterns("@Output(.*?\n.*?\n)", "public(.*?\n)",
 				"(\\w+\\s\\w+\\()", source);
+		
+		/**
+		 * Verification for className
+		 */
+		Matcher matcherDomain = Pattern.compile("class(.*?\n)").matcher(source);
 
+		int index = 0;
+		
+		while (matcherDomain.find() && index == 0) {
+			String[] parts = matcherDomain.group().split("\s");
+			setClassName(parts[1]);
+			index+=1;
+		}
+		
 		try {
 
 			if (matchersJcodingTime.size() > 0) {
@@ -314,11 +343,10 @@ public class InputData {
 		}
 
 		TestBuilder testMethodBuilder = new TestMethodBuilder(describeMethodNames, typeMethods, parameters,
-				getOutputs(), getInputs(), limits);
+				getOutputs(), getInputs(), limits, className);
 		testMethodBuilder.generate();
 		
 		if (testMethodBuilder.getStringBuffer() != null) {
-			System.out.println(testMethodBuilder.getStringBuffer().toString());
 			testMethodBuilder.generateFile();
 		}
 

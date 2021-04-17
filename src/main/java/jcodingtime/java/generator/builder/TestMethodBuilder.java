@@ -20,18 +20,20 @@ public class TestMethodBuilder extends TestBuilder {
 	private ArrayList<String> parameters;
 	private StringBuffer stringBuffer;
 	private BufferedWriter bufferedWriter;
+	private String className;
 
 	// final static Logger logger = Logger.getLogger(TestMethodBuilder.class);
 
 	public TestMethodBuilder(ArrayList<String> methodNames, ArrayList<String> typeMethods,
 			ArrayList<String> parameters, ArrayList<String> outputs, ArrayList<String> inputs,
-			ArrayList<ArrayList<String>> limits) {
+			ArrayList<ArrayList<String>> limits, String className) {
 		this.methodNames = methodNames;
 		this.typeMethods = typeMethods;
 		this.outputs = outputs;
 		this.inputs = inputs;
 		this.limits = limits;
 		this.parameters = parameters;
+		this.className = className;
 	}
 
 	@Override
@@ -39,13 +41,15 @@ public class TestMethodBuilder extends TestBuilder {
 		if (inputs != null | limits != null) {
 
 			stringBuffer = new StringBuffer();
+			
+			stringBuffer.append("package jct;\n\n");
 			stringBuffer.append("import org.junit.Test;\n");
 			stringBuffer.append("import static org.junit.Assert.assertEquals;\n\n");
-			stringBuffer.append("public class TestExample {\n");
+			stringBuffer.append("public class "+ className +"Test {\n");
 
 			if (inputs != null) {
 				for (int i = 0; i < inputs.size(); i++) {
-					stringBuffer.append("\r@Test");
+					stringBuffer.append("\t@Test");
 
 					String output = outputs.get(i);
 
@@ -54,10 +58,10 @@ public class TestMethodBuilder extends TestBuilder {
 					output = output.replace("\n", "").replace("\r", "");
 					input = input.replace("\n", "").replace("\r", "");
 
-					stringBuffer.append("\rpublic " + typeMethods.get(i) + " testCase"
+					stringBuffer.append("\t\n\tpublic void testCase"
 							+ methodNames.get(i).toUpperCase().substring(0, 1) + methodNames.get(i).substring(1) + "()"
-							+ " {" + "\n\texpected = " + output + "\n\tobtained = " + methodNames.get(i) + input
-							+ "\n\tassertEquals(expected, obtained);" + "\n}");
+							+ " {" + "\n\t\t"+ typeMethods.get(i)+ " expected = " + output + ";\n\t\t"+ typeMethods.get(i)+ " obtained = " + methodNames.get(i) + input
+							+ ";\n\t\tassertEquals(expected, obtained);" + "\n\t}\n\n");
 				}
 			} else {
 				// nothing TODO
@@ -73,91 +77,91 @@ public class TestMethodBuilder extends TestBuilder {
 						
 						String[] parts = parameters.get(i).split("\\s+");
 						String onlyVariable = parts[1];
-						
-						System.out.println("ANTES");
-						System.out.println(innerBoundary);
-						System.out.println(upperBoundary);
-						System.out.println("DEPOIS");
 						if (j == 0) {
+							stringBuffer.append("\n\t@Test");
 							limitNumber -= 1;
 
 							stringBuffer
-									.append("\npublic void testCase1" + methodNames.get(i).toUpperCase().substring(0, 1)
-											+ methodNames.get(i).substring(1) + "()" + " {" + "\n\t"
-											+ parameters.get(i) + " = " + limitNumber + ";" + "\n\tboolean "
+									.append("\n\tpublic void testCase1" + methodNames.get(i).toUpperCase().substring(0, 1)
+											+ methodNames.get(i).substring(1) + "()" + " {" + "\n\t\t"
+											+ parameters.get(i) + " = " + limitNumber + ";" + "\n\t\tboolean "
 											+ "valid = " + "false;" 
-											+ "\n\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
-											+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\tvalid = true;" 
-											+ "\n\t} else {" 
-											+ "\n\t\tvalid = false;" 
-											+ "\n\t}" 
-											+ "\n\tassertNotEquals(true, valid);" + "\n}");
+											+ "\n\t\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
+											+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\t\tvalid = true;" 
+											+ "\n\t\t} else {" 
+											+ "\n\t\t\tvalid = false;" 
+											+ "\n\t\t}" 
+											+ "\n\t\tassertNotEquals(true, valid);" + "\n\t}\n\n");
 
+							stringBuffer.append("\t@Test");
 							limitNumber += 1;
-							stringBuffer.append("\npublic void testCase2"
+							stringBuffer.append("\n\tpublic void testCase2"
 									+ methodNames.get(i).toUpperCase().substring(0, 1) + methodNames.get(i).substring(1)
-									+ "()" + " {" + "\n\t" + parameters.get(i) + " = " + limitNumber + ";"
-									+ "\n\tboolean " + "valid = " + "false;"
-									+ "\n\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
-									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\tvalid = true;" 
+									+ "()" + " {" + "\n\t\t" + parameters.get(i) + " = " + limitNumber + ";"
+									+ "\n\t\tboolean " + "valid = " + "false;"
+									+ "\n\t\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
+									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\t\tvalid = true;" 
 									+ "\n\t} else {" 
-									+ "\n\t\tvalid = false;" 
-									+ "\n\t}"
+									+ "\n\t\t\tvalid = false;" 
+									+ "\n\t\t}"
 									
-									+ "\n\tassertEquals(true, valid);" + "\n}");
+									+ "\n\t\tassertEquals(true, valid);" + "\n\t}\n\n");
 
+							stringBuffer.append("\t@Test");
 							limitNumber += 1;
-							stringBuffer.append("\npublic void testCase3"
+							stringBuffer.append("\n\tpublic void testCase3"
 									+ methodNames.get(i).toUpperCase().substring(0, 1) + methodNames.get(i).substring(1)
-									+ "()" + " {" + "\n\t" + parameters.get(i) + " = " + limitNumber + ";"
-									+ "\n\tboolean " + "valid = " + "false;" 
-									+ "\n\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
-									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\tvalid = true;" 
-									+ "\n\t} else {" 
-									+ "\n\t\tvalid = false;" 
-									+ "\n\t}"
-									+ "\n\tassertEquals(true, valid);" + "\n}");
+									+ "()" + " {" + "\n\t\t" + parameters.get(i) + " = " + limitNumber + ";"
+									+ "\n\t\tboolean " + "valid = " + "false;" 
+									+ "\n\t\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
+									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\t\tvalid = true;" 
+									+ "\n\t\t} else {" 
+									+ "\n\t\t\tvalid = false;" 
+									+ "\n\t\t}"
+									+ "\n\t\tassertEquals(true, valid);" + "\n\t}\n\n");
 
 						}
 
 						if (j == 1) {
+							stringBuffer.append("\t@Test");
 							limitNumber -= 1;
-							stringBuffer.append("\npublic void testCase4"
+							stringBuffer.append("\n\tpublic void testCase4"
 									+ methodNames.get(i).toUpperCase().substring(0, 1) + methodNames.get(i).substring(1)
-									+ "()" + " {" + "\n\t" + parameters.get(i) + " = " + limitNumber + ";"
-									+ "\n\tboolean " + "valid = " + "false;"
-									+ "\n\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
-									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\tvalid = true;" 
-									+ "\n\t} else {" 
-									+ "\n\t\tvalid = false;" 
-									+ "\n\t}"
-									+ "\n\tassertEquals(true, valid);" + "\n}");
+									+ "()" + " {" + "\n\t\t" + parameters.get(i) + " = " + limitNumber + ";"
+									+ "\n\t\tboolean " + "valid = " + "false;"
+									+ "\n\t\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
+									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\t\tvalid = true;" 
+									+ "\n\t\t} else {" 
+									+ "\n\t\t\tvalid = false;" 
+									+ "\n\t\t}"
+									+ "\n\t\tassertEquals(true, valid);" + "\n\t}\n\n");
 
+							stringBuffer.append("\t@Test");
 							limitNumber += 1;
-							stringBuffer.append("\npublic void testCase5"
+							stringBuffer.append("\n\tpublic void testCase5"
 									+ methodNames.get(i).toUpperCase().substring(0, 1) + methodNames.get(i).substring(1)
-									+ "()" + " {" + "\n\t" + parameters.get(i) + " = " + limitNumber + ";"
-									+ "\n\tboolean " + "valid = " + "false;"
-									+ "\n\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
-									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\tvalid = true;" 
-									+ "\n\t} else {" 
-									+ "\n\t\tvalid = false;" 
-									+ "\n\t}"
-									+ "\n\tassertEquals(true, valid);" + "\n}");
+									+ "()" + " {" + "\n\t\t" + parameters.get(i) + " = " + limitNumber + ";"
+									+ "\n\t\tboolean " + "valid = " + "false;"
+									+ "\n\t\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
+									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\t\tvalid = true;" 
+									+ "\n\t\t} else {" 
+									+ "\n\t\t\tvalid = false;" 
+									+ "\n\t\t}"
+									+ "\n\t\tassertEquals(true, valid);" + "\n\t}\n\n");
 
+							stringBuffer.append("\t@Test");
 							limitNumber += 1;
 							stringBuffer
-									.append("\npublic void testCase6" + methodNames.get(i).toUpperCase().substring(0, 1)
-											+ methodNames.get(i).substring(1) + "()" + " {" + "\n\t"
-											+ parameters.get(i) + " = " + limitNumber + ";" + "\n\tboolean "
-											+ "valid = " + "false;"
-											+ "\n\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
-											+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\tvalid = true;" 
-											+ "\n\t} else {" 
-											+ "\n\t\tvalid = false;" 
-											+ "\n\t}"
-											
-											+ "\n\tassertNotEquals(true, valid);" + "\n}");
+									.append("\n\tpublic void testCase6" + methodNames.get(i).toUpperCase().substring(0, 1)
+											+ methodNames.get(i).substring(1) + "()" + " {" + "\n\t\t"
+											+ parameters.get(i) + " = " + limitNumber + ";" 
+											+ "\n\t\tboolean " + "valid = " + "false;"
+											+ "\n\t\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
+											+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\t\tvalid = true;" 
+											+ "\n\t\t} else {" 
+											+ "\n\t\t\tvalid = false;" 
+											+ "\n\t\t}"
+											+ "\n\t\tassertNotEquals(true, valid);" + "\n\t}\n\n");
 						}
 					}
 				}
@@ -175,9 +179,15 @@ public class TestMethodBuilder extends TestBuilder {
 	public void generateFile() {
 
 		try {
-			// Specify the file name and path here
-			File file = new File("src/jcodingtime/java/example/output/TestExample.java");
-
+			// Create directory o jct
+			File directory = new File("src/test/java/jct/");
+			if(!directory.exists()) {
+				directory.mkdir();
+			}
+			
+			// Specify the file name
+			File file = new File("src/test/java/jct/"+className+"Test.java");
+			
 			/*
 			 * This logic will make sure that the file gets created if it is not present at
 			 * the specified location
@@ -190,9 +200,10 @@ public class TestMethodBuilder extends TestBuilder {
 			bufferedWriter = new BufferedWriter(fw);
 			bufferedWriter.write(stringBuffer.toString());
 			bufferedWriter.close();
-			System.out.println("File written Successfully");
+			
+			System.out.println("The test file was generated with success!\n" + "See the path: src/test/jct/");
 		} catch (IOException e) {
-			// logger.error("Could not create this file", e);
+			System.out.println("Could not create this file!\n" + e);
 		}
 	}
 
