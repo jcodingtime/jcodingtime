@@ -68,10 +68,15 @@
 }
    ```
 
-2. At the terminal, run the command below with the **relative path of java file** you want to test.
+2. At the terminal, run the command below with the **relative path of java file** you want to test:
 
+- Linux or MacOS:
  ```sh
  java -classpath "JCodingTime.jar:commons-io-2.8.0.jar" jcodingtime.java.Main RELATIVE_PATH_HERE
+   ```
+- Windows: 
+ ```sh
+ java -classpath "JCodingTime.jar;commons-io-2.8.0.jar" jcodingtime.java.Main RELATIVE_PATH_HERE
    ```
    
 3. See the file test generate on test folder of your project.
