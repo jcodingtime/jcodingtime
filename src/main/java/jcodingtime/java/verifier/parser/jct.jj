@@ -25,6 +25,9 @@ TOKEN : {
     | < SPARAM: "secondParam">{System.out.println("Palavra reservada secondParam coincide com -> "+image);}
     | < OUTPUT: "Output">{System.out.println("Palavra reservada Output coincide com -> "+image);}
     | < RPARAM: "result">{System.out.println("Palavra reservada result coincide com -> "+image);}
+    | < LIMITVALUE: "LimitValue">{System.out.println("Palavra reservada LimitValue coincide com -> "+image);}
+    | < IPARAM: "innerBoundary">{System.out.println("Palavra reservada innerBoundary coincide com -> "+image);}
+    | < UPARAM: "upperBoundary">{System.out.println("Palavra reservada upperBoundary coincide com -> "+image);}
 }
 
 /* SEPARATORS */
@@ -180,6 +183,7 @@ void Program():{}
 {
     signatures()
     method()
+    limitValue()
 }
 
 void signatures():{}
@@ -187,6 +191,12 @@ void signatures():{}
   <AT><JCODINGTIME>
   <AT><INPUT><LPAREN><FPARAM><ASSIGN><DIGIT><COMMA><SPARAM><ASSIGN><DIGIT><RPAREN>
   <AT><OUTPUT><LPAREN><RPARAM><INTEGER><RPAREN>
+}
+
+void limitValue():{}
+{
+  <AT><JCODINGTIME>
+  <AT><LIMITVALUE><LPAREN><FPARAM><ASSIGN><DIGIT><COMMA><SPARAM><ASSIGN><DIGIT><RPAREN>
 }
 
 void method():{}

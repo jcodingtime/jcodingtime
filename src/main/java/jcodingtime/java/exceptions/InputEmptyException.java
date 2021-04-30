@@ -1,10 +1,13 @@
 package jcodingtime.java.exceptions;
 
-
+/**
+ * Exception Class for treatment of input empty
+ */
 public class InputEmptyException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
+    /**
+     * Constructor of exception class
+     * @param message
+     */
     public InputEmptyException(String message) {
         super(message);
     }

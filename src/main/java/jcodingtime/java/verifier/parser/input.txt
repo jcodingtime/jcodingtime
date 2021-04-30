@@ -5,11 +5,17 @@ import annotations.JCodingTime;
 import annotations.Output;
 
 public class Example {
-	
+
 	@JCodingTime
 	@Input(firstParam=5, secondParam=5)
 	@Output(result=25)
 	public static int multiplyTwoNumbers(int firstParameter, int secondParameter) {
 		return firstParameter * secondParameter;
-	}	
+	}
+
+	@JCodingTime
+	@LimitValue(innerBoundary=5, upperBoundary=5)
+	public static int defineAge() {
+	    return age;
+	}
 }

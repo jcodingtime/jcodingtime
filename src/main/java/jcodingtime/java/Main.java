@@ -4,27 +4,27 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import jcodingtime.java.verifier.parser.ParseException;
 import org.apache.commons.io.FileUtils;
 
-import jcodingtime.java.exceptions.NotFoundPathException;
 import jcodingtime.java.verifier.collector.InputData;
 
+/**
+ * JCodingTime is a open-source project for generation unit tests for Java applications using specifics annotations.
+ * This project was developed for graduation of Software Engineering in University of Brasilia.
+ */
 public class Main {
-
-	// final static Logger logger = Logger.getLogger(Main.class);
-
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ParseException {
 
 		File file = null;
-		
+
 		if (args.length > 0) {
 			file = FileUtils.getFile(args[0]);
 		} else {
 			String path = "src/main/java/jcodingtime/java/example/Example.java";
 			file = FileUtils.getFile(path);
 		}
-		
-		
+
 		File tmpDir = FileUtils.getTempDirectory();
 
 		// copy file to temp directory

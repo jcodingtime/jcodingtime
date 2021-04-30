@@ -7,19 +7,47 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * TestMethodBuilder This class must build the test file
+ * Class for builder the completed file of tests
  */
 public class TestFileBuilder extends TestBuilder {
 
+	/**
+	 * Description of methods to be generated
+	 */
 	private ArrayList<String> methodNames;
+	/**
+	 * Description of type methods to be generated
+	 */
 	private ArrayList<String> typeMethods;
+	/**
+	 * Values of output annotation
+	 */
 	private ArrayList<String> outputs;
+	/**
+	 * Values of input annotation
+	 */
 	private ArrayList<String> inputs;
+	/**
+	 * Values of limitValue annotation
+	 */
 	private ArrayList<ArrayList<String>> limits;
+	/**
+	 * Values of parameters of method
+	 */
 	private ArrayList<String> parameters;
+	/**
+	 * StringBuffer of source file
+	 */
 	private StringBuffer stringBuffer;
+	/**
+	 * BufferedWriter of file generated
+	 */
 	private BufferedWriter bufferedWriter;
+	/**
+	 * Class name of source file
+	 */
 	private String className;
+
 
 	public TestFileBuilder() {
 	}
@@ -99,6 +127,14 @@ public class TestFileBuilder extends TestBuilder {
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public StringBuffer getStringBuffer() {
+		return stringBuffer;
+	}
+
+	public void setBufferedWriter(BufferedWriter bufferedWriter) {
+		this.bufferedWriter = bufferedWriter;
 	}
 
 	@Override
@@ -270,14 +306,6 @@ public class TestFileBuilder extends TestBuilder {
 		} catch (IOException e) {
 			System.out.println("Could not create this file!\n" + e);
 		}
-	}
-
-	public StringBuffer getStringBuffer() {
-		return stringBuffer;
-	}
-
-	public void setBufferedWriter(BufferedWriter bufferedWriter) {
-		this.bufferedWriter = bufferedWriter;
 	}
 
 }

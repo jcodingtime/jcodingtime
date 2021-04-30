@@ -1,9 +1,13 @@
 package jcodingtime.java.exceptions;
 
+/**
+ * Exception Class for treatment of not found path
+ */
 public class NotFoundPathException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
+    /**
+     * Constructor of exception class
+     * @param message
+     */
     public NotFoundPathException(String message) {
         super(message);
     }

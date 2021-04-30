@@ -1,10 +1,13 @@
 package jcodingtime.java.exceptions;
 
-
+/**
+ * Exception Class for treatment of match not exist
+ */
 public class MatchNotExistException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
+    /**
+     * Constructor of exception class
+     * @param message
+     */
     public MatchNotExistException(String message) {
         super(message);
     }

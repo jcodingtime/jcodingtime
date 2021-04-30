@@ -9,21 +9,48 @@ import jcodingtime.java.generator.builder.TestBuilder;
 import jcodingtime.java.generator.builder.TestFileBuilder;
 
 /**
- * InputData This class must receive parser input data
+ * This class must receive the source file and treats the data
  */
 public class InputData {
 
+	/**
+	 * Inputs extrated for data treatment
+	 */
 	private ArrayList<String> inputs;
+	/**
+	 * Output extrated for data treatment
+	 */
 	private ArrayList<String> outputs;
+	/**
+	 * Methods extrated for data treatment
+	 */
 	private ArrayList<String> methods;
+	/**
+	 * Parameters extrated for data treatment
+	 */
 	private ArrayList<String> parameters;
+	/**
+	 * Limits extrated for data treatment
+	 */
 	private ArrayList<ArrayList<String>> limits;
+	/**
+	 * Source file in string type
+	 */
 	private String source;
+	/**
+	 * Class name
+	 */
 	private String className;
 
+	/**
+	 * Empty constructor
+	 */
 	public InputData() {
 	}
 
+	/**
+	 * Completed constructor
+	 */
 	public InputData(ArrayList<String> inputs, ArrayList<String> outputs, ArrayList<String> methods,
 			ArrayList<String> parameters, ArrayList<ArrayList<String>> limits, String source, String className) {
 		this.inputs = inputs;
@@ -91,6 +118,12 @@ public class InputData {
 		this.className = className;
 	}
 
+	/**
+	 * Method for extract of string relevant parts of content based of pattern
+	 * @param pattern
+	 * @param matcher
+	 * @return
+	 */
 	private ArrayList<String> matchesOfString(String pattern, String matcher) {
 		ArrayList<String> arrMatchers = new ArrayList<String>();
 		Matcher mjct = Pattern.compile(pattern).matcher(matcher);
@@ -100,6 +133,14 @@ public class InputData {
 		return arrMatchers;
 	}
 
+	/**
+	 * Method for extract parts of parts of content based of patterns
+	 * @param firstPattern
+	 * @param secondPattern
+	 * @param thirdPattern
+	 * @param matcher
+	 * @return
+	 */
 	private ArrayList<String> matchesPatterns(String firstPattern, String secondPattern, String thirdPattern,
 			String matcher) {
 		Matcher mjct = Pattern.compile(firstPattern).matcher(matcher);
@@ -120,7 +161,7 @@ public class InputData {
 	}
 
 	/**
-	 * Method for build inputs or outputs
+	 * Method for build inputs or outputs entries
 	 */
 	private ArrayList<String> buildData(ArrayList<String> matchers) {
 		ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
@@ -174,7 +215,7 @@ public class InputData {
 	}
 
 	/**
-	 * Method for build limits cases
+	 * Method for build limits cases entries
 	 */
 	private ArrayList<ArrayList<String>> buildLimits(ArrayList<String> matchers) {
 		ArrayList<ArrayList<String>> tokensTmp = new ArrayList<ArrayList<String>>();
@@ -251,7 +292,6 @@ public class InputData {
 
 			if (matchersJcodingTime.size() > 0) {
 
-				// logical for get only inputs
 				// get string range between @Input and @Output
 				ArrayList<String> matchersInputOutput = this.matchesOfString("@Input(.*?\n.*?.*?@Output)", source);
 
@@ -329,7 +369,7 @@ public class InputData {
 				throw new MatchNotExistException("Clause @JCodingTime not found.");
 			}
 		} catch (MatchNotExistException e) {
-			System.out.println("Please, put the clause @JCodingTime inside the method for generate the tests.");
+			System.out.println("Please, put the clause @JCodingTime inside the method for generate the tests.\n" + e);
 		}
 
 		TestBuilder testMethodBuilder = new TestFileBuilder(describeMethodNames, typeMethods, parameters,
