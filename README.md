@@ -34,6 +34,8 @@
 
 2. Unzip the JAR's files in root directory of JHipster project.
 
+3. Download and install the JDK 11 [this link](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) (if you not configured it in jhipster project yet)
+
 <!-- USAGE EXAMPLES -->
 ## Usage
 
@@ -66,10 +68,15 @@
 }
    ```
 
-2. At the terminal, run the command below with the **relative path of java file** you want to test.
+2. At the terminal, run the command below with the **relative path of java file** you want to test:
 
+- Linux or MacOS:
  ```sh
- java -classpath "JCT.jar:commons-io-2.8.0.jar" jcodingtime.java.Main RELATIVE_PATH_HERE
+ java -classpath "JCodingTime.jar:commons-io-2.8.0.jar" jcodingtime.java.Main RELATIVE_PATH_HERE
+   ```
+- Windows: 
+ ```sh
+ java -classpath "JCodingTime.jar;commons-io-2.8.0.jar" jcodingtime.java.Main RELATIVE_PATH_HERE
    ```
    
 3. See the file test generate on test folder of your project.
