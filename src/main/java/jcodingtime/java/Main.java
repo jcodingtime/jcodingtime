@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import jcodingtime.java.verifier.parser.ParseException;
 import org.apache.commons.io.FileUtils;
 
 import jcodingtime.java.verifier.collector.InputData;
@@ -14,14 +13,14 @@ import jcodingtime.java.verifier.collector.InputData;
  * This project was developed for graduation of Software Engineering in University of Brasilia.
  */
 public class Main {
-	public static void main(String[] args) throws IOException, ParseException {
+	public static void main(String[] args) throws IOException {
 
 		File file = null;
 
 		if (args.length > 0) {
 			file = FileUtils.getFile(args[0]);
 		} else {
-			String path = "src/main/java/jcodingtime/java/example/Example.java";
+			String path = "src/main/java/jcodingtime/java/example/ShoppingCart.java";
 			file = FileUtils.getFile(path);
 		}
 

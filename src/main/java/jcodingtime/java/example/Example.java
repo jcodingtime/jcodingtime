@@ -1,9 +1,6 @@
 package jcodingtime.java.example;
 
-import jcodingtime.java.verifier.annotation.Input;
-import jcodingtime.java.verifier.annotation.JCodingTime;
-import jcodingtime.java.verifier.annotation.LimitValue;
-import jcodingtime.java.verifier.annotation.Output;
+import jcodingtime.java.verifier.annotation.*;
 
 /**
  * Example Class source for generate unit tests
@@ -46,5 +43,4 @@ public class Example {
 	public static int setAge(int age) {
 		return age;
 	}
-
 }

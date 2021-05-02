@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
 /**
  * Class for builder the completed file of tests
  */
@@ -144,9 +143,37 @@ public class TestFileBuilder extends TestBuilder {
 			stringBuffer = new StringBuffer();
 
 			stringBuffer.append("package jct;\n\n");
-			stringBuffer.append("import org.junit.Test;\n");
-			stringBuffer.append("import static org.junit.Assert.assertEquals;\n\n");
-			stringBuffer.append("public class "+ className +"Test {\n");
+			stringBuffer.append("import org.junit.jupiter.api.*;\n");
+			stringBuffer.append("import static org.junit.Assert.assertEquals;\n");
+
+			if(className.contains("Service")) {
+				boolean stopped = false;
+
+				for(int i=0; i < typeMethods.size() && !stopped; i++) {
+					if(typeMethods.get(i).equals("BigDecimal")) {
+						stringBuffer.append("import java.math.BigDecimal;\n");
+						stopped = true;
+					}
+				}
+				stringBuffer.append("import org.springframework.beans.factory.annotation.*;\n");
+				stringBuffer.append("import com.mycompany.myapp.repository." + className.replace("Service", "Repository") + ";\n");
+				stringBuffer.append("import com.mycompany.myapp.service." + className + ";\n\n");
+			}
+
+			stringBuffer.append("public class "+ className +"Test {\n\n");
+
+			String beforeEachContent = "";
+			if(className.contains("Service")) {
+				String extractClassName = className.replace("Service", "");
+				String repositoryLowerCase = extractClassName.substring(0, 1).toLowerCase() + extractClassName.substring(1)+"Repository";
+				stringBuffer.append("\t@Autowired\n");
+				stringBuffer.append("\tprivate "+extractClassName+"Repository "+repositoryLowerCase +";\n");
+				stringBuffer.append("\tprivate "+className+" "+className.substring(0, 1).toLowerCase() + className.substring(1) +";\n\n");
+				beforeEachContent = "\t\t"+className.substring(0, 1).toLowerCase() + className.substring(1) +" = new "+className+"("+repositoryLowerCase+");\n";
+			}
+
+			stringBuffer.append("\t@BeforeEach\n");
+			stringBuffer.append("\tpublic void setUp() {\n" + beforeEachContent + "\t}\n\n");
 
 			if (inputs != null) {
 				for (int i = 0; i < inputs.size(); i++) {
@@ -161,7 +188,7 @@ public class TestFileBuilder extends TestBuilder {
 
 					stringBuffer.append("\t\n\tpublic void testCase"
 							+ methodNames.get(i).toUpperCase().substring(0, 1) + methodNames.get(i).substring(1) + "()"
-							+ " {" + "\n\t\t"+ typeMethods.get(i)+ " expected = " + output + ";\n\t\t"+ typeMethods.get(i)+ " obtained = " + methodNames.get(i) + input
+							+ " {" + "\n\t\t"+ typeMethods.get(i)+ " expected = " + output + ";\n\t\t"+ typeMethods.get(i)+ " obtained = " + className.substring(0, 1).toLowerCase() + className.substring(1)+ "."+  methodNames.get(i) + input
 							+ ";\n\t\tassertEquals(expected, obtained);" + "\n\t}\n\n");
 				}
 			} else {
@@ -179,7 +206,7 @@ public class TestFileBuilder extends TestBuilder {
 						String[] parts = parameters.get(i).split("\\s+");
 						String onlyVariable = parts[1];
 						if (j == 0) {
-							stringBuffer.append("\n\t@Test");
+							stringBuffer.append("\t@Test");
 							limitNumber -= 1;
 
 							stringBuffer
@@ -202,7 +229,7 @@ public class TestFileBuilder extends TestBuilder {
 									+ "\n\t\tboolean " + "valid = " + "false;"
 									+ "\n\t\tif\s("+ onlyVariable +"\s>=\s" + innerBoundary
 									+ "\s&&\s" + onlyVariable + "\s<=\s" + upperBoundary + "){" + "\n\t\t\tvalid = true;"
-									+ "\n\t} else {"
+									+ "\n\t\t} else {"
 									+ "\n\t\t\tvalid = false;"
 									+ "\n\t\t}"
 
@@ -269,6 +296,10 @@ public class TestFileBuilder extends TestBuilder {
 			} else {
 				// nothing TODO
 			}
+
+			String afterEachContent = "";
+			stringBuffer.append("\t@AfterEach\n");
+			stringBuffer.append("\tpublic void tearDown() {\n" + afterEachContent + "\t}\n");
 
 			stringBuffer.append("\n}");
 			return stringBuffer.toString();
