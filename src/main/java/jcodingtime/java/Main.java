@@ -20,7 +20,7 @@ public class Main {
 		if (args.length > 0) {
 			file = FileUtils.getFile(args[0]);
 		} else {
-			String path = "src/main/java/jcodingtime/java/example/ShoppingCart.java";
+			String path = "src/main/java/jcodingtime/java/example/ExampleService.java";
 			file = FileUtils.getFile(path);
 		}
 

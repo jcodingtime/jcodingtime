@@ -14,5 +14,5 @@ public @interface Output {
 	 * Result expected based of entries in input annotation
 	 * @return
 	 */
-	int result();
+	String result() default "";
 }

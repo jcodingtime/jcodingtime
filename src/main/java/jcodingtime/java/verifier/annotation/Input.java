@@ -15,10 +15,11 @@ public @interface Input {
 	 * First param used for entry of data
 	 * @return
 	 */
-	int firstParam();
+	String firstParam() default "";
 	/**
 	 * Second param used for entry of data
 	 * @return
 	 */
-	int secondParam();
+	String secondParam() default "";
 }
+
