@@ -176,14 +176,30 @@ public class InputData {
 
 				describe.add(matchers.get(i).toString().trim());
 
-				// get numbers of the range
-				Pattern p = Pattern.compile("\\d+");
-				Matcher m = p.matcher(describe.get(i)); // ex: 5 5
-
-				while (m.find()) {
-					inputToken.add(m.group());
+				//booleans verification
+				if(describe.get(i).contains("true")) {
+					inputToken.add("true");
+				} else if (describe.get(i).contains("false")) {
+					inputToken.add("false");
 				}
 
+				// get only numbers of the range
+				//strings verification
+				Pattern ps = Pattern.compile("\"[A-z]+\"");
+				Matcher ms = ps.matcher(describe.get(i));
+				while (ms.find() && !describe.get(i).contains("true") && !describe.get(i).contains("false")) {
+					inputToken.add(ms.group());
+				}
+
+				if(!ms.find() && !describe.get(i).contains("true") && !describe.get(i).contains("false")){
+					Pattern p = Pattern.compile("\\d+");
+					Matcher m = p.matcher(describe.get(i));
+					while (m.find()) {
+						inputToken.add(m.group());
+					}
+				}
+
+				System.out.println(inputToken);
 				tokensTmp.add(inputToken);
 
 				// treatment for function format
@@ -208,6 +224,7 @@ public class InputData {
 				}
 				dataToSet.add(sb.toString());
 			}
+
 			return dataToSet;
 		} else {
 			return null;
@@ -377,7 +394,7 @@ public class InputData {
 		testMethodBuilder.generate();
 
 		if (testMethodBuilder.getStringBuffer() != null) {
-			System.out.println(testMethodBuilder.getStringBuffer().toString());
+//			System.out.println(testMethodBuilder.getStringBuffer().toString());
 			testMethodBuilder.generateFile();
 		}
 

@@ -36,6 +36,13 @@ public class ExampleService {
 	}
 
 	@JCodingTime
+	@Input(firstParam="100", secondParam="20")
+	@Output(result="80")
+	public BigDecimal applyDiscount(BigDecimal totalValue, Integer percentualDiscount) {
+		return totalValue.subtract(totalValue.multiply(BigDecimal.valueOf(percentualDiscount / 100)));
+	}
+
+	@JCodingTime
 	@Input(firstParam= "Brazil", secondParam="18")
 	@Output(result="true")
 	public Boolean verifyCountryAndAge(String country, Integer age){
@@ -46,6 +53,13 @@ public class ExampleService {
 	}
 
 	@JCodingTime
+	@Input(firstParam="20", secondParam="10")
+	@Output(result="200")
+	public BigDecimal calculateTotalValue(BigDecimal price, Integer quantity) {
+		return price.multiply(BigDecimal.valueOf(quantity));
+	}
+
+	@JCodingTime
 	@Input(firstParam= "Admin")
 	@Output(result="true")
 	public Boolean verifyAdminUser(String role){
@@ -53,5 +67,25 @@ public class ExampleService {
 			return true;
 		}
 		return false;
+	}
+
+	@JCodingTime
+	@Input(firstParam= "cosmetic")
+	@Output(result="true")
+	public Boolean verifyCosmeticCategory(String category){
+		if(category.equals("category")){
+			return true;
+		}
+		return false;
+	}
+
+	@JCodingTime
+	@Input(firstParam="1")
+	@Output(result="true")
+	public Boolean verifyPaymentType(Integer paymentMethod) {
+		if(paymentMethod.equals(0)) {
+			return false;
+		}
+		return true;
 	}
 }

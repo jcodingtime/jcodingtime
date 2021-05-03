@@ -180,7 +180,7 @@ public class TestFileBuilder extends TestBuilder {
 					stringBuffer.append("\t@Test");
 
 					String output = outputs.get(i);
-
+					
 					String input = inputs.get(i);
 
 					output = output.replace("\n", "").replace("\r", "");
