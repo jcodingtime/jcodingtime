@@ -199,7 +199,6 @@ public class InputData {
 					}
 				}
 
-				System.out.println(inputToken);
 				tokensTmp.add(inputToken);
 
 				// treatment for function format
@@ -353,9 +352,7 @@ public class InputData {
 						describeMethodNames.add(parts[1].replace("(", ""));
 					}
 				}
-			}
-
-			if (matchersJCTLimitValue.size() > 0) {
+			} else if (matchersJCTLimitValue.size() > 0) {
 				ArrayList<String> matchersLimitValuePublic = this.matchesOfString("@LimitValue(.*?\n.*?public)",
 						source);
 

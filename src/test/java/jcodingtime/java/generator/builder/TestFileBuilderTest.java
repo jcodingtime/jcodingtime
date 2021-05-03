@@ -29,12 +29,12 @@ public class TestFileBuilderTest {
 
     @BeforeEach
     void init() {
-        describeMethodNames = new ArrayList<>(Arrays.asList("multiplyTwoNumbers", "sumTwoNumbers", "setAge"));
-        typeMethods = new ArrayList<>(Arrays.asList("int", "int", "int"));
-        parameters = new ArrayList<>(Arrays.asList("int age"));
-        outputs = new ArrayList<>(Arrays.asList("(25)", "(4)"));
-        inputs = new ArrayList<>(Arrays.asList("(5,5)", "(2,2)"));
-        firstArray = new ArrayList<>(Arrays.asList("0", "130"));
+        describeMethodNames = new ArrayList<String>(Arrays.asList("multiplyTwoNumbers", "sumTwoNumbers", "setAge"));
+        typeMethods = new ArrayList<String>(Arrays.asList("int", "int", "int"));
+        parameters = new ArrayList<String>(Arrays.asList("int age"));
+        outputs = new ArrayList<String>(Arrays.asList("(25)", "(4)"));
+        inputs = new ArrayList<String>(Arrays.asList("(5,5)", "(2,2)"));
+        firstArray = new ArrayList<String>(Arrays.asList("0", "130"));
         limits = new ArrayList<ArrayList<String>>(Arrays.asList(firstArray));
         className = "Example";
 
@@ -54,12 +54,12 @@ public class TestFileBuilderTest {
 
     @Test
     void validateFields() {
-        ArrayList<String> describeMethodNames = new ArrayList<>(Arrays.asList("multiplyTwoNumbers", "sumTwoNumbers", "setAge"));
-        ArrayList<String> typeMethods = new ArrayList<>(Arrays.asList("int", "int", "int"));
-        ArrayList<String> parameters = new ArrayList<>(Arrays.asList("int age"));
-        ArrayList<String> outputs = new ArrayList<>(Arrays.asList("(25)", "(4)"));
-        ArrayList<String> inputs = new ArrayList<>(Arrays.asList("(5,5)", "(2,2)"));
-        ArrayList<String> firstArray = new ArrayList<>(Arrays.asList("0", "130"));
+        ArrayList<String> describeMethodNames = new ArrayList<String>(Arrays.asList("multiplyTwoNumbers", "sumTwoNumbers", "setAge"));
+        ArrayList<String> typeMethods = new ArrayList<String>(Arrays.asList("int", "int", "int"));
+        ArrayList<String> parameters = new ArrayList<String>(Arrays.asList("int age"));
+        ArrayList<String> outputs = new ArrayList<String>(Arrays.asList("(25)", "(4)"));
+        ArrayList<String> inputs = new ArrayList<String>(Arrays.asList("(5,5)", "(2,2)"));
+        ArrayList<String> firstArray = new ArrayList<String>(Arrays.asList("0", "130"));
         ArrayList<ArrayList<String>> limits = new ArrayList<ArrayList<String>>(Arrays.asList(firstArray));
 
         assertThat(testFileBuilder.getMethodNames()).isEqualTo(describeMethodNames);
