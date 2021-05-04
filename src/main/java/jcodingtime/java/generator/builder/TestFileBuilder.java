@@ -142,6 +142,8 @@ public class TestFileBuilder extends TestBuilder {
 
 			stringBuffer = new StringBuffer();
 
+			String extractClassName = className.replace("Service", "");
+
 			stringBuffer.append("package jct;\n\n");
 			stringBuffer.append("import org.junit.jupiter.api.*;\n");
 			stringBuffer.append("import static org.junit.Assert.assertEquals;\n");
@@ -156,6 +158,13 @@ public class TestFileBuilder extends TestBuilder {
 					}
 				}
 				stringBuffer.append("import org.springframework.beans.factory.annotation.*;\n");
+
+				if(extractClassName.equals("User")) {
+					stringBuffer.append("import org.springframework.security.crypto.password.PasswordEncoder;\n\n");
+					stringBuffer.append("import com.mycompany.myapp.repository.AuthorityRepository;\n\n");
+					stringBuffer.append("import org.springframework.cache.CacheManager;;\n\n");
+
+				}
 				stringBuffer.append("import com.mycompany.myapp.repository." + className.replace("Service", "Repository") + ";\n");
 				stringBuffer.append("import com.mycompany.myapp.service." + className + ";\n\n");
 			}
@@ -164,12 +173,18 @@ public class TestFileBuilder extends TestBuilder {
 
 			String beforeEachContent = "";
 			if(className.contains("Service")) {
-				String extractClassName = className.replace("Service", "");
 				String repositoryLowerCase = extractClassName.substring(0, 1).toLowerCase() + extractClassName.substring(1)+"Repository";
 				stringBuffer.append("\t@Autowired\n");
 				stringBuffer.append("\tprivate "+extractClassName+"Repository "+repositoryLowerCase +";\n");
 				stringBuffer.append("\tprivate "+className+" "+className.substring(0, 1).toLowerCase() + className.substring(1) +";\n\n");
-				beforeEachContent = "\t\t"+className.substring(0, 1).toLowerCase() + className.substring(1) +" = new "+className+"("+repositoryLowerCase+");\n";
+				if(extractClassName.equals("User")) {
+					stringBuffer.append("\tprivate PasswordEncoder passwordEncoder;\n");
+					stringBuffer.append("\tprivate AuthorityRepository authorityRepository;\n");
+					stringBuffer.append("\tprivate CacheManager cacheManager;\n");
+					beforeEachContent = "\t\t"+className.substring(0, 1).toLowerCase() + className.substring(1) +" = new "+className+"("+repositoryLowerCase+", passwordEncoder, authorityRepository, cacheManager);\n";
+				} else {
+					beforeEachContent = "\t\t"+className.substring(0, 1).toLowerCase() + className.substring(1) +" = new "+className+"("+repositoryLowerCase+");\n";
+				}
 			}
 
 			stringBuffer.append("\t@BeforeEach\n");
@@ -180,7 +195,7 @@ public class TestFileBuilder extends TestBuilder {
 					stringBuffer.append("\t@Test");
 
 					String output = outputs.get(i);
-					
+
 					String input = inputs.get(i);
 
 					output = output.replace("\n", "").replace("\r", "");
