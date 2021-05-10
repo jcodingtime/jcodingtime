@@ -72,11 +72,11 @@
 
 - Linux or MacOS:
  ```sh
- java -classpath "JCodingTime.jar:commons-io-2.8.0.jar" jcodingtime.java.Main RELATIVE_PATH_HERE
+ java -classpath "JCodingTime.jar:commons-io-2.8.0.jar" com.github.jcodingtime.java.Main RELATIVE_PATH_HERE
    ```
 - Windows: 
  ```sh
- java -classpath "JCodingTime.jar;commons-io-2.8.0.jar" jcodingtime.java.Main RELATIVE_PATH_HERE
+ java -classpath "JCodingTime.jar;commons-io-2.8.0.jar" com.github.jcodingtime.java.Main RELATIVE_PATH_HERE
    ```
    
 3. See the file test generate on test folder of your project.
@@ -103,4 +103,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[license-url]: https://github.com/jcodingtime/tcc-jcodingtime/blob/v1.0.0/LICENSE
+[license-url]: https://github.com/com.github.jcodingtime/tcc-com.github.jcodingtime/blob/v1.0.0/LICENSE
