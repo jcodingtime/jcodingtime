@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
 
-import com.github.jcodingtime.jcodingtime.verifier.collector.InputData;
+import io.github.jcodingtime.jcodingtime.verifier.collector.InputData;
 
 /**
  * JCodingTime is a open-source project for generation unit tests for Java applications using specifics annotations.
@@ -18,7 +18,7 @@ public class Main {
 		if (args.length > 0) {
 			file = FileUtils.getFile(args[0]);
 		} else {
-			String path = "src/main/java/com/github/jcodingtime/jcodingtime/example/ExampleService.java";
+			String path = "src/main/java/io/github/jcodingtime/jcodingtime/example/ExampleService.java";
 			file = FileUtils.getFile(path);
 		}
 
